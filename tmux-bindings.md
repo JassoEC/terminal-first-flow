@@ -99,6 +99,23 @@
 | `PREFIX S-→` | `refresh-client -R 10` | Scroll vista 10px derecha |
 | `PREFIX Delete` | `refresh-client -c` | Limpia el scrollback del panel |
 
+### Comandos de redimensionamiento (desde `PREFIX :`)
+
+| Comando | Descripción |
+|---------|-------------|
+| `resize-pane -U` | 1 línea más arriba |
+| `resize-pane -D` | 1 línea más abajo |
+| `resize-pane -L` | 1 columna más a la izquierda |
+| `resize-pane -R` | 1 columna más a la derecha |
+| `resize-pane -U 5` | 5 líneas más arriba |
+| `resize-pane -D 5` | 5 líneas más abajo |
+| `resize-pane -L 5` | 5 columnas más a la izquierda |
+| `resize-pane -R 5` | 5 columnas más a la derecha |
+| `resize-pane -y 10` | Fijar altura a 10 líneas |
+| `resize-pane -x 40` | Fijar ancho a 40 columnas |
+| `resize-pane -Z` | Zoom / Unzoom panel |
+| `resize-pane -t 2 -U` | Redimensionar panel #2 arriba |
+
 ---
 
 ## 6. Copy, Paste & Buffers
