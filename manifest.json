@@ -1,7 +1,7 @@
 {
-  "name": "tmux Cheat Sheet",
-  "short_name": "tmux Cheat",
-  "description": "Reference for tmux default key bindings (Emacs mode)",
+  "name": "TerminalFirst",
+  "short_name": "TermFirst",
+  "description": "Reference for tmux, Vim, and NeoVim default key bindings",
   "start_url": "./tmux-copy-cheatsheet.html",
   "display": "standalone",
   "background_color": "#f1f5f9",
