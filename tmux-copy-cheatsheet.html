@@ -584,6 +584,12 @@
     display: none !important;
   }
 
+  .plugin-badge {
+    font-size: 0.75em;
+    margin-left: 0.3em;
+    vertical-align: super;
+  }
+
   /* ════════════════════════════════════════════
      NOMENCLATURE / LEGEND
   ════════════════════════════════════════════ */
@@ -757,7 +763,8 @@
 </div>
 <nav class="tool-selector">
   <button data-tool="tmux" class="active" title="tmux default bindings">tmux</button>
-  <button data-tool="vim" disabled title="Próximamente">vim</button>
+  <button data-tool="vim" title="Vim default bindings">Vim</button>
+  <button data-tool="nvim" title="NeoVim LSP, Telescope, Terminal">NeoVim</button>
 </nav>
 <div id="no-results" hidden>
   Sin resultados para <span class="term"></span>
@@ -1093,15 +1100,554 @@
 </div>
 
 <div class="tool-section" data-tool="vim" hidden>
-  <div class="page">
-    <div class="page-header">
-      <div><h1>vim</h1></div>
-      <div class="header-meta">Próximamente</div>
-    </div>
-    <div class="card card-slate" style="text-align:center;padding:3rem;font-size:var(--body-size);color:var(--text-muted);">
-      Cheat sheet de vim en construcción.
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 3 — Vim Default Bindings: Movimiento y Edición            -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>Vim Default Bindings</h1>
+  </div>
+  <div class="header-meta">
+    <span>&lt;leader&gt;</span> = <span>\</span> (por defecto, comúnmente remapeado a <span>Space</span>)
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección Vim:</strong> todos los atajos son <strong>defaults</strong> de Vim/NeoVim vanilla.
+  <span class="legend-sep">|</span>
+  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>M-</kbd> = <kbd>Alt</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>Esc</kbd> = regresar a modo Normal
+  <span class="legend-sep">|</span>
+  <kbd>i</kbd> = modo Insert
+  <span class="legend-sep">|</span>
+  <kbd>v</kbd> = modo Visual
+  <span class="legend-sep">|</span>
+  <kbd>:</kbd> = modo Command-line
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. MOVIMIENTO ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Movimiento</div>
+    <div class="card-body">
+      <div class="group-label">Básico</div>
+      <div class="binding essential"><span class="key">h j k l</span><span class="desc">← ↓ ↑ →</span></div>
+      <div class="binding essential"><span class="key">w / W</span><span class="desc">Palabra adelante (puntuación / espacios)</span></div>
+      <div class="binding essential"><span class="key">b / B</span><span class="desc">Palabra atrás (puntuación / espacios)</span></div>
+      <div class="binding"><span class="key">e / E</span><span class="desc">Final de palabra (puntuación / espacios)</span></div>
+      <div class="binding essential"><span class="key">0 / ^ / $</span><span class="desc">Inicio / 1er carácter / fin de línea</span></div>
+      <div class="binding essential"><span class="key">gg / G</span><span class="desc">Principio / Final del archivo</span></div>
+      <div class="binding"><span class="key">{ / }</span><span class="desc">Párrafo anterior / siguiente</span></div>
+
+      <div class="group-label">Jump</div>
+      <div class="binding"><span class="key">f&lt;char&gt; / F&lt;char&gt;</span><span class="desc">Adelante / Atrás al carácter</span></div>
+      <div class="binding"><span class="key">t&lt;char&gt; / T&lt;char&gt;</span><span class="desc">Hasta justo antes / después</span></div>
+      <div class="binding"><span class="key">; / ,</span><span class="desc">Repetir jump / dirección opuesta</span></div>
+      <div class="binding"><span class="key">%</span><span class="desc">Paréntesis/llave/corchete correspondiente</span></div>
+
+      <div class="group-label">Pantalla</div>
+      <div class="binding"><span class="key">C-u / C-d</span><span class="desc">Media página arriba / abajo</span></div>
+      <div class="binding"><span class="key">zt / zz / zb</span><span class="desc">Cursor arriba / centro / abajo de pantalla</span></div>
+      <div class="binding"><span class="key">H / M / L</span><span class="desc">Primera / Media / Última línea visible</span></div>
+      <div class="binding"><span class="key">C-o / C-i</span><span class="desc">Posición anterior / siguiente (jumplist)</span></div>
+      <div class="binding"><span class="key">g; / g,</span><span class="desc">Cambio anterior / siguiente (change list)</span></div>
+
+      <div class="group-label">Búsqueda rápida</div>
+      <div class="binding"><span class="key">* / #</span><span class="desc">Buscar palabra bajo cursor adelante / atrás</span></div>
+      <div class="binding"><span class="key">g* / g#</span><span class="desc">Ídem sin word boundaries</span></div>
+      <div class="binding"><span class="key">ge / gE</span><span class="desc">Palabra anterior al final</span></div>
     </div>
   </div>
+
+  <!-- ─── 2. EDICIÓN ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Edición</div>
+    <div class="card-body">
+      <div class="group-label">Entrar a Insert</div>
+      <div class="binding essential"><span class="key">i / I</span><span class="desc">Antes del cursor / Inicio de línea</span></div>
+      <div class="binding essential"><span class="key">a / A</span><span class="desc">Después del cursor / Fin de línea</span></div>
+      <div class="binding essential"><span class="key">o / O</span><span class="desc">Nueva línea abajo / arriba</span></div>
+      <div class="binding"><span class="key">Esc</span><span class="desc">Regresar a modo Normal</span></div>
+
+      <div class="group-label">Borrar</div>
+      <div class="binding essential"><span class="key">x / X</span><span class="desc">Borrar carácter bajo cursor / antes</span></div>
+      <div class="binding essential"><span class="key">dd</span><span class="desc">Borrar línea completa</span></div>
+      <div class="binding"><span class="key">D</span><span class="desc">Borrar desde cursor hasta fin de línea</span></div>
+      <div class="binding"><span class="key">J</span><span class="desc">Unir siguiente línea</span></div>
+      <div class="binding"><span class="key">gJ</span><span class="desc">Unir sin insertar espacio</span></div>
+
+      <div class="group-label">Copiar y Pegar</div>
+      <div class="binding essential"><span class="key">yy / Y</span><span class="desc">Copiar línea</span></div>
+      <div class="binding"><span class="key">yw / y$</span><span class="desc">Copiar palabra / hasta fin de línea</span></div>
+      <div class="binding essential"><span class="key">p / P</span><span class="desc">Pegar después / antes del cursor</span></div>
+
+      <div class="group-label">Undo / Redo</div>
+      <div class="binding essential"><span class="key">u</span><span class="desc">Deshacer</span></div>
+      <div class="binding essential"><span class="key">C-r</span><span class="desc">Rehacer</span></div>
+      <div class="binding"><span class="key">.</span><span class="desc">Repetir el último cambio</span></div>
+      <div class="binding"><span class="key">~</span><span class="desc">Cambiar mayúsculas/minúsculas del carácter</span></div>
+      <div class="binding"><span class="key">r&lt;char&gt;</span><span class="desc">Reemplazar carácter bajo cursor</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. CAMBIOS COMPUESTOS ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Cambios Compuestos</div>
+    <div class="card-body">
+      <div class="group-label">Change</div>
+      <div class="binding essential"><span class="key">cw / cW</span><span class="desc">Cambiar palabra</span></div>
+      <div class="binding essential"><span class="key">ciw / ciW</span><span class="desc">Cambiar "inner" palabra</span></div>
+      <div class="binding"><span class="key">ci( / ci{ / ci[ / ci" / ci'</span><span class="desc">Cambiar dentro de delimitadores</span></div>
+      <div class="binding"><span class="key">ca( / ca{ / ca[ / ca" / ca'</span><span class="desc">Cambiar dentro + delimitadores</span></div>
+      <div class="binding"><span class="key">c$ / C</span><span class="desc">Cambiar desde cursor hasta fin</span></div>
+      <div class="binding"><span class="key">S / cc</span><span class="desc">Borrar línea y entrar en Insert</span></div>
+      <div class="binding"><span class="key">s</span><span class="desc">Borrar carácter y entrar en Insert</span></div>
+      <div class="binding"><span class="key">ct&lt;char&gt; / cf&lt;char&gt;</span><span class="desc">Cambiar hasta / hasta e incluyendo</span></div>
+      <div class="binding"><span class="key">R</span><span class="desc">Sobreescribir múltiples caracteres</span></div>
+
+      <div class="group-label">Indent y Formato</div>
+      <div class="binding"><span class="key">>> / <<</span><span class="desc">Indentar / Desindentar línea</span></div>
+      <div class="binding"><span class="key">=</span><span class="desc">Auto-indentar línea</span></div>
+      <div class="binding"><span class="key">gg=G</span><span class="desc">Auto-indentar todo el archivo</span></div>
+      <div class="binding"><span class="key">gq</span><span class="desc">Formatear línea hasta textwidth</span></div>
+      <div class="binding"><span class="key">C-a / C-x</span><span class="desc">Incrementar / Decrementar número</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. VISUAL MODE ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Visual Mode</div>
+    <div class="card-body">
+      <div class="group-label">Entrar</div>
+      <div class="binding essential"><span class="key">v</span><span class="desc">Selección carácter a carácter</span></div>
+      <div class="binding essential"><span class="key">V</span><span class="desc">Selección por líneas</span></div>
+      <div class="binding"><span class="key">C-v</span><span class="desc">Selección rectangular (bloque)</span></div>
+      <div class="binding"><span class="key">gv</span><span class="desc">Repetir última selección</span></div>
+      <div class="binding"><span class="key">o / O</span><span class="desc">Alternar esquina de la selección</span></div>
+      <div class="binding"><span class="key">Esc</span><span class="desc">Salir de Visual</span></div>
+
+      <div class="group-label">Operaciones</div>
+      <div class="binding"><span class="key">gU / gu</span><span class="desc">Mayúsculas / Minúsculas en selección</span></div>
+      <div class="binding"><span class="key">> / <</span><span class="desc">Indentar / Desindentar selección</span></div>
+      <div class="binding"><span class="key">=</span><span class="desc">Auto-indentar selección</span></div>
+      <div class="binding"><span class="key">J</span><span class="desc">Unir líneas en selección</span></div>
+      <div class="binding"><span class="key">y</span><span class="desc">Copiar selección</span></div>
+      <div class="binding"><span class="key">d / x</span><span class="desc">Borrar selección</span></div>
+      <div class="binding"><span class="key">c</span><span class="desc">Cambiar selección</span></div>
+      <div class="binding"><span class="key">r&lt;char&gt;</span><span class="desc">Reemplazar cada carácter</span></div>
+      <div class="binding"><span class="key">!</span><span class="desc">Filtrar selección por comando externo</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. BÚSQUEDA ─── -->
+  <div class="card card-rose">
+    <div class="card-header">Búsqueda y Reemplazo</div>
+    <div class="card-body">
+      <div class="group-label">Buscar</div>
+      <div class="binding essential"><span class="key">/pattern</span><span class="desc">Búsqueda hacia adelante</span></div>
+      <div class="binding"><span class="key">?pattern</span><span class="desc">Búsqueda hacia atrás</span></div>
+      <div class="binding essential"><span class="key">n / N</span><span class="desc">Siguiente / Anterior coincidencia</span></div>
+      <div class="binding"><span class="key">:noh</span><span class="desc">Quitar resaltado</span></div>
+
+      <div class="group-label">Reemplazar</div>
+      <div class="binding"><span class="key">:%s/old/new/g</span><span class="desc">Reemplazar en todo el archivo</span></div>
+      <div class="binding"><span class="key">:%s/old/new/gc</span><span class="desc">Reemplazar con confirmación</span></div>
+      <div class="binding"><span class="key">:%g/pattern/cmd</span><span class="desc">Ejecutar comando en líneas que coinciden</span></div>
+      <div class="binding"><span class="key">:%v/pattern/cmd</span><span class="desc">Ejecutar en líneas que NO coinciden</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. MARCAS Y REGISTROS ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Marcas y Registros</div>
+    <div class="card-body">
+      <div class="group-label">Marcas</div>
+      <div class="binding"><span class="key">m{a-z}</span><span class="desc">Marca en el archivo actual</span></div>
+      <div class="binding"><span class="key">m{A-Z}</span><span class="desc">Marca entre archivos (global)</span></div>
+      <div class="binding"><span class="key">'{mark}</span><span class="desc">Ir a la marca</span></div>
+      <div class="binding"><span class="key">:marks</span><span class="desc">Mostrar todas las marcas</span></div>
+
+      <div class="group-label">Registros</div>
+      <div class="binding"><span class="key">"{reg}</span><span class="desc">Seleccionar registro</span></div>
+      <div class="binding"><span class="key">"xyy / "xp</span><span class="desc">Copiar/Pegar usando registro x</span></div>
+      <div class="binding"><span class="key">q{reg}</span><span class="desc">Graba macro en registro</span></div>
+      <div class="binding"><span class="key">q</span><span class="desc">Detiene grabación</span></div>
+      <div class="binding"><span class="key">@{reg}</span><span class="desc">Ejecutar macro del registro</span></div>
+      <div class="binding"><span class="key">@@</span><span class="desc">Repetir última macro</span></div>
+      <div class="binding"><span class="key">:reg</span><span class="desc">Ver contenido de registros</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 2 — Página siguiente: Ventanas, Tabs, Ex Commands</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 4 — Vim: Ventanas, Tabs, Ex Commands, Macros              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>Vim Default Bindings <small>Avanzado</small></h1>
+  </div>
+  <div class="header-meta">
+    <span>C-w</span> ventanas &nbsp; <span>gt</span> tabs &nbsp; <span>:</span> comandos
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección Vim Avanzado:</strong> ventanas, tabs, comandos Ex, y macros.
+  <span class="legend-sep">|</span>
+  <kbd>C-w</kbd> = <kbd>Ctrl+w</kbd> (combinación, no prefijo)
+  <span class="legend-sep">|</span>
+  <kbd>:</kbd> = modo Command-line
+  <span class="legend-sep">|</span>
+  <kbd>q</kbd> = grabar macro
+</div>
+
+<div class="grid-4">
+
+  <!-- ─── 7. VENTANAS ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Ventanas (Splits)</div>
+    <div class="card-body">
+      <div class="group-label">Crear</div>
+      <div class="binding essential"><span class="key">C-w s</span><span class="desc">Dividir horizontal</span></div>
+      <div class="binding essential"><span class="key">C-w v</span><span class="desc">Dividir vertical</span></div>
+      <div class="binding"><span class="key">C-w n</span><span class="desc">Nueva ventana</span></div>
+
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">C-w hjkl</span><span class="desc">Ir a ventana izq/abajo/arriba/der</span></div>
+      <div class="binding"><span class="key">C-w w / W</span><span class="desc">Siguiente / Anterior ventana</span></div>
+      <div class="binding"><span class="key">C-w p</span><span class="desc">Ventana anterior</span></div>
+      <div class="binding"><span class="key">C-w t</span><span class="desc">Ir a ventana top-left</span></div>
+
+      <div class="group-label">Mover y Redimensionar</div>
+      <div class="binding"><span class="key">C-w HJKL</span><span class="desc">Mover ventana a borde</span></div>
+      <div class="binding"><span class="key">C-w r / R</span><span class="desc">Rotar ventanas</span></div>
+      <div class="binding"><span class="key">C-w =</span><span class="desc">Igualar tamaños</span></div>
+      <div class="binding"><span class="key">C-w _</span><span class="desc">Maximizar altura</span></div>
+      <div class="binding"><span class="key">C-w |</span><span class="desc">Maximizar ancho</span></div>
+
+      <div class="group-label">Cerrar</div>
+      <div class="binding"><span class="key">C-w q / c</span><span class="desc">Cerrar ventana</span></div>
+      <div class="binding"><span class="key">C-w o</span><span class="desc">Cerrar todas menos la actual</span></div>
+      <div class="binding"><span class="key">C-w T</span><span class="desc">Mover ventana a tab</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 8. TABS ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Tabs</div>
+    <div class="card-body">
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">gt / gT</span><span class="desc">Siguiente / Anterior tab</span></div>
+      <div class="binding"><span class="key">Ngt</span><span class="desc">Ir a tab número N</span></div>
+      <div class="binding"><span class="key">:tabn / :tabp</span><span class="desc">= gt / gT</span></div>
+
+      <div class="group-label">Crear y Cerrar</div>
+      <div class="binding"><span class="key">:tabnew [file]</span><span class="desc">Nueva tab</span></div>
+      <div class="binding"><span class="key">:tabe file</span><span class="desc">Abrir archivo en nueva tab</span></div>
+      <div class="binding"><span class="key">:tab split</span><span class="desc">Abrir archivo en nueva tab</span></div>
+      <div class="binding"><span class="key">:tabclose</span><span class="desc">Cerrar tab actual</span></div>
+      <div class="binding"><span class="key">:tabs</span><span class="desc">Ver todas las tabs</span></div>
+      <div class="binding"><span class="key">:tabm N</span><span class="desc">Mover tab a posición N</span></div>
+      <div class="binding"><span class="key">:tabdo cmd</span><span class="desc">Ejecutar comando en todas las tabs</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 9. EX COMMANDS ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Ex Commands</div>
+    <div class="card-body">
+      <div class="group-label">Archivo</div>
+      <div class="binding essential"><span class="key">:w</span><span class="desc">Guardar</span></div>
+      <div class="binding essential"><span class="key">:q</span><span class="desc">Salir</span></div>
+      <div class="binding"><span class="key">:wq / :x</span><span class="desc">Guardar y salir</span></div>
+      <div class="binding"><span class="key">:q! / ZQ</span><span class="desc">Salir sin guardar</span></div>
+      <div class="binding"><span class="key">:e file</span><span class="desc">Abrir archivo</span></div>
+      <div class="binding"><span class="key">:e!</span><span class="desc">Recargar (descartar cambios)</span></div>
+      <div class="binding"><span class="key">:w file</span><span class="desc">Guardar en archivo específico</span></div>
+      <div class="binding"><span class="key">:r file</span><span class="desc">Insertar contenido de archivo</span></div>
+      <div class="binding"><span class="key">:r !cmd</span><span class="desc">Insertar salida de comando</span></div>
+
+      <div class="group-label">Buffers</div>
+      <div class="binding"><span class="key">:bn / :bp</span><span class="desc">Siguiente / Anterior buffer</span></div>
+      <div class="binding"><span class="key">:bd</span><span class="desc">Cerrar buffer</span></div>
+      <div class="binding"><span class="key">:ls</span><span class="desc">Listar buffers</span></div>
+      <div class="binding"><span class="key">:b N</span><span class="desc">Ir a buffer número N</span></div>
+      <div class="binding"><span class="key">:e#</span><span class="desc">Reabrir último archivo</span></div>
+
+      <div class="group-label">Configuración</div>
+      <div class="binding"><span class="key">:set nu/nonu</span><span class="desc">Mostrar/Ocultar números</span></div>
+      <div class="binding"><span class="key">:set hls/nohls</span><span class="desc">Resaltar búsqueda on/off</span></div>
+      <div class="binding"><span class="key">:set paste/nopaste</span><span class="desc">Modo pegado (sin auto-indent)</span></div>
+      <div class="binding"><span class="key">:help</span><span class="desc">Ayuda (C-] seguir links, C-t volver)</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 10. MACROS ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Macros</div>
+    <div class="card-body">
+      <div class="group-label">Grabar</div>
+      <div class="binding"><span class="key">q{reg}</span><span class="desc">Graba macro en registro</span></div>
+      <div class="binding"><span class="key">q</span><span class="desc">Detiene grabación</span></div>
+      <div class="binding"><span class="key">q{0-9a-zA-Z"}</span><span class="desc">Especificar registro</span></div>
+
+      <div class="group-label">Ejecutar</div>
+      <div class="binding"><span class="key">@{reg}</span><span class="desc">Ejecutar macro del registro</span></div>
+      <div class="binding"><span class="key">@@</span><span class="desc">Repetir última macro</span></div>
+      <div class="binding"><span class="key">5@@</span><span class="desc">Repetir macro 5 veces</span></div>
+      <div class="binding"><span class="key">:{range}normal @{reg}</span><span class="desc">Ejecutar macro en rango</span></div>
+
+      <div class="group-label">Gestión</div>
+      <div class="binding"><span class="key">:reg</span><span class="desc">Ver contenido de registros</span></div>
+      <div class="binding"><span class="key">:let @a='...'</span><span class="desc">Asignar texto a registro</span></div>
+      <div class="binding"><span class="key">:@{reg}</span><span class="desc">Ejecutar macro desde ex</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="workflow-box">
+  <h2>Workflow — Buscar y reemplazar en 5 pasos</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">/pattern</span><span class="l">buscar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">n / N</span><span class="l">navegar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:%s/old/new/g</span><span class="l">reemplazar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">u</span><span class="l">deshacer</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:w</span><span class="l">guardar</span></div>
+  </div>
+  <div>
+    <span class="wf-example">:%s/foo/bar/gc &nbsp;→&nbsp; reemplazar "foo" por "bar" con confirmación</span>
+  </div>
+</div>
+
+<div class="page-label">2 / 2</div>
+</div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 5 — NeoVim: LSP, Telescope, Terminal                      -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="tool-section" data-tool="nvim" hidden>
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>NeoVim <small>LSP, Telescope, Terminal</small></h1>
+  </div>
+  <div class="header-meta">
+    🔌 = plugin requerido &nbsp; ■ = built-in NeoVim
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección NeoVim:</strong> LSP, Telescope, y Terminal son específicos de NeoVim.
+  <span class="legend-sep">|</span>
+  🔌 = Requiere plugin (LSP: nvim-lspconfig, Telescope: telescope.nvim)
+  <span class="legend-sep">|</span>
+  ■ = Built-in de NeoVim (no requiere plugin)
+  <span class="legend-sep">|</span>
+  <kbd>&lt;leader&gt;</kbd> = <kbd>\</kbd> (por defecto, comúnmente <kbd>Space</kbd>)
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. LSP 🔌 ─── -->
+  <div class="card card-blue">
+    <div class="card-header">LSP 🔌</div>
+    <div class="card-body">
+      <div class="group-label">Navegación</div>
+      <div class="binding essential"><span class="key">gd</span><span class="desc">Ir a definición</span></div>
+      <div class="binding"><span class="key">gD</span><span class="desc">Ir a declaración</span></div>
+      <div class="binding"><span class="key">gi</span><span class="desc">Ir a implementación</span></div>
+      <div class="binding"><span class="key">gr</span><span class="desc">Referencias</span></div>
+      <div class="binding essential"><span class="key">K</span><span class="desc">Hover (documentación)</span></div>
+      <div class="binding"><span class="key">C-k</span><span class="desc">Signature help</span></div>
+
+      <div class="group-label">Diagnósticos</div>
+      <div class="binding"><span class="key">[d / ]d</span><span class="desc">Diagnóstico anterior / siguiente</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;e</span><span class="desc">Ver diagnósticos (ventana flotante)</span></div>
+      <div class="binding"><span class="key">:LspInfo</span><span class="desc">Info de servidores LSP</span></div>
+
+      <div class="group-label">Acciones</div>
+      <div class="binding"><span class="key">&lt;leader&gt;rn</span><span class="desc">Renombrar símbolo</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;ca</span><span class="desc">Code action</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f</span><span class="desc">Formatear buffer</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wa</span><span class="desc">Agregar carpeta al workspace</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wr</span><span class="desc">Remover carpeta del workspace</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wl</span><span class="desc">Listar carpetas del workspace</span></div>
+
+      <div class="group-label">Comandos</div>
+      <div class="binding"><span class="key">:LspStart</span><span class="desc">Iniciar servidor</span></div>
+      <div class="binding"><span class="key">:LspStop</span><span class="desc">Detener servidor</span></div>
+      <div class="binding"><span class="key">:LspRestart</span><span class="desc">Reiniciar servidor</span></div>
+      <div class="binding"><span class="key">:LspLog</span><span class="desc">Ver log de LSP</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. TELESCOPE 🔌 ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Telescope 🔌</div>
+    <div class="card-body">
+      <div class="group-label">Keymaps de la comunidad</div>
+      <div class="binding essential"><span class="key">&lt;leader&gt;ff</span><span class="desc">Buscar archivos</span></div>
+      <div class="binding essential"><span class="key">&lt;leader&gt;fg</span><span class="desc">Live grep</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fb</span><span class="desc">Buffers abiertos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fh</span><span class="desc">Help tags</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fr</span><span class="desc">Archivos recientes</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fc</span><span class="desc">Comandos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fs</span><span class="desc">Buscar string bajo cursor</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fd</span><span class="desc">Diagnósticos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fm</span><span class="desc">Marcas</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fk</span><span class="desc">Keymaps</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f/</span><span class="desc">Búsqueda en buffer actual</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f:</span><span class="desc">Historial de comandos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f"</span><span class="desc">Registros</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fj</span><span class="desc">Jump list</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;ft</span><span class="desc">Buscar todo (multi)</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fp</span><span class="desc">Mostrar todos los pickers</span></div>
+
+      <div class="group-label">Dentro del picker</div>
+      <div class="binding"><span class="key">C-j / C-k</span><span class="desc">Siguiente / Anterior resultado</span></div>
+      <div class="binding"><span class="key">C-v</span><span class="desc">Abrir en split vertical</span></div>
+      <div class="binding"><span class="key">C-x</span><span class="desc">Abrir en split horizontal</span></div>
+      <div class="binding"><span class="key">C-t</span><span class="desc">Abrir en nueva tab</span></div>
+      <div class="binding"><span class="key">Tab</span><span class="desc">Seleccionar/deseleccionar (multiselect)</span></div>
+      <div class="binding"><span class="key">C-q</span><span class="desc">Enviar selección a quickfix</span></div>
+      <div class="binding"><span class="key">Esc / C-c</span><span class="desc">Cerrar</span></div>
+      <div class="binding"><span class="key">?</span><span class="desc">Ayuda de keymaps</span></div>
+
+      <div class="group-label">Comandos :Telescope</div>
+      <div class="binding"><span class="key">:Telescope find_files</span><span class="desc">= &lt;leader&gt;ff</span></div>
+      <div class="binding"><span class="key">:Telescope live_grep</span><span class="desc">= &lt;leader&gt;fg</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_references</span><span class="desc">= gr</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_definitions</span><span class="desc">= gd</span></div>
+      <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
+      <div class="binding"><span class="key">:Telescope resume</span><span class="desc">Reanudar último picker</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. TERMINAL ■ ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Terminal ■</div>
+    <div class="card-body">
+      <div class="group-label">Abrir</div>
+      <div class="binding essential"><span class="key">:term</span><span class="desc">Abrir terminal en buffer</span></div>
+      <div class="binding"><span class="key">:split term://bash</span><span class="desc">Terminal en split horizontal</span></div>
+      <div class="binding"><span class="key">:vsplit term://bash</span><span class="desc">Terminal en split vertical</span></div>
+
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">C-\ C-n</span><span class="desc">Salir de modo terminal a Normal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;N</span><span class="desc">Alternativo: salir a Normal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;hjkl</span><span class="desc">Navegar entre terminal y ventanas</span></div>
+      <div class="binding"><span class="key">i / a</span><span class="desc">Entrar en modo terminal (insert)</span></div>
+
+      <div class="group-label">Cerrar</div>
+      <div class="binding"><span class="key">:q</span><span class="desc">Cerrar buffer de terminal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;q</span><span class="desc">Cerrar terminal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;c</span><span class="desc">Cerrar terminal</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. NEOVIM BUILT-IN ■ ─── -->
+  <div class="card card-violet">
+    <div class="card-header">NeoVim Built-in ■</div>
+    <div class="card-body">
+      <div class="group-label">Diagnóstico</div>
+      <div class="binding"><span class="key">:checkhealth</span><span class="desc">Diagnóstico del sistema</span></div>
+      <div class="binding"><span class="key">:checkhealth lsp</span><span class="desc">Diagnóstico de LSP</span></div>
+      <div class="binding"><span class="key">:checkhealth provider</span><span class="desc">Diagnóstico de providers</span></div>
+      <div class="binding"><span class="key">:messages</span><span class="desc">Ver mensajes/log recientes</span></div>
+      <div class="binding"><span class="key">:messages clear</span><span class="desc">Limpiar mensajes</span></div>
+
+      <div class="group-label">Treesitter</div>
+      <div class="binding"><span class="key">:TSInstall &lt;lang&gt;</span><span class="desc">Instalar parser</span></div>
+      <div class="binding"><span class="key">:TSUpdate</span><span class="desc">Actualizar parsers</span></div>
+      <div class="binding"><span class="key">:TSInstallInfo</span><span class="desc">Listar parsers disponibles</span></div>
+      <div class="binding"><span class="key">:TSModuleInfo</span><span class="desc">Info de módulos</span></div>
+      <div class="binding"><span class="key">:InspectTree</span><span class="desc">Inspeccionar árbol sintáctico</span></div>
+      <div class="binding"><span class="key">:Inspect</span><span class="desc">Ver highlight bajo cursor</span></div>
+      <div class="binding"><span class="key">:EditQuery</span><span class="desc">Editar query treesitter</span></div>
+
+      <div class="group-label">Utilidades</div>
+      <div class="binding"><span class="key">:registers</span><span class="desc">Ver registros</span></div>
+      <div class="binding"><span class="key">:jumps</span><span class="desc">Ver jump list</span></div>
+      <div class="binding"><span class="key">:changes</span><span class="desc">Ver change list</span></div>
+      <div class="binding"><span class="key">:oldfiles</span><span class="desc">Archivos recientes</span></div>
+      <div class="binding"><span class="key">:browse oldfiles</span><span class="desc">Navegar archivos recientes</span></div>
+      <div class="binding"><span class="key">:Man</span><span class="desc">Ver man pages</span></div>
+      <div class="binding"><span class="key">:make</span><span class="desc">Ejecutar make</span></div>
+      <div class="binding"><span class="key">:grep</span><span class="desc">Ejecutar grep (vimgrep)</span></div>
+      <div class="binding"><span class="key">:copen</span><span class="desc">Abrir ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cnext / :cprev</span><span class="desc">Siguiente / Anterior quickfix</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. QUICKFIX/LOCATION LIST ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Quickfix & Location List</div>
+    <div class="card-body">
+      <div class="group-label">Quickfix</div>
+      <div class="binding"><span class="key">:copen</span><span class="desc">Abrir ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cclose</span><span class="desc">Cerrar ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cnext / :cn</span><span class="desc">Siguiente en quickfix</span></div>
+      <div class="binding"><span class="key">:cprev / :cp</span><span class="desc">Anterior en quickfix</span></div>
+      <div class="binding"><span class="key">:cfirst / :clast</span><span class="desc">Primero / Último en quickfix</span></div>
+      <div class="binding"><span class="key">:cc N</span><span class="desc">Ir a item N en quickfix</span></div>
+      <div class="binding"><span class="key">:colder / :cnewer</span><span class="desc">Lista quickfix anterior / siguiente</span></div>
+      <div class="binding"><span class="key">:cdo cmd</span><span class="desc">Ejecutar comando en cada item</span></div>
+      <div class="binding"><span class="key">:cfdo cmd</span><span class="desc">Ejecutar en cada archivo</span></div>
+
+      <div class="group-label">Location List</div>
+      <div class="binding"><span class="key">:lopen</span><span class="desc">Abrir ventana location</span></div>
+      <div class="binding"><span class="key">:lclose</span><span class="desc">Cerrar ventana location</span></div>
+      <div class="binding"><span class="key">:lnext / :lprev</span><span class="desc">Siguiente / Anterior location</span></div>
+      <div class="binding"><span class="key">:lfirst / :llast</span><span class="desc">Primero / Último location</span></div>
+      <div class="binding"><span class="key">:ll N</span><span class="desc">Ir a item N en location</span></div>
+      <div class="binding"><span class="key">:ldo cmd</span><span class="desc">Ejecutar comando en cada item</span></div>
+      <div class="binding"><span class="key">:lfdo cmd</span><span class="desc">Ejecutar en cada archivo</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. GIT (vía Telescope) ─── -->
+  <div class="card card-green">
+    <div class="card-header">Git 🔌 (Telescope)</div>
+    <div class="card-body">
+      <div class="group-label">Telescope Git</div>
+      <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
+      <div class="binding"><span class="key">:Telescope git_branches</span><span class="desc">Ramas git</span></div>
+      <div class="binding"><span class="key">:Telescope git_commits</span><span class="desc">Commits git</span></div>
+      <div class="binding"><span class="key">:Telescope git_status</span><span class="desc">Estado git</span></div>
+      <div class="binding"><span class="key">:Telescope git_stash</span><span class="desc">Stash git</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 1</div>
+</div>
+
 </div>
 
 <script>
