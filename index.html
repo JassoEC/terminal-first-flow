@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#3b82f6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="tmux Cheat">
+<meta name="description" content="Reference for tmux default key bindings (Emacs mode)">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%233b82f6' rx='24'/%3E%3Ctext x='96' y='120' text-anchor='middle' fill='white' font-size='72' font-family='monospace' font-weight='bold'%3Etm%3C/text%3E%3C/svg%3E">
+<title>tmux Cheat Sheet — Default Bindings</title>
+<style>
+  /* ════════════════════════════════════════════
+     CSS VARIABLES — Light & Dark Mode
+  ════════════════════════════════════════════ */
+  :root {
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-header: #f1f5f9;
+    --bg-workflow: #f1f5f9;
+    --text-main: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --border-header: #cbd5e1;
+    --shadow: rgba(0,0,0,0.06);
+    --color-blue: #3b82f6;
+    --color-teal: #14b8a6;
+    --color-amber: #f59e0b;
+    --color-violet: #8b5cf6;
+    --color-rose: #f43f5e;
+    --color-slate: #64748b;
+    --color-green: #10b981;
+    --font-mono: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --font-body: Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --header-size: 1.5rem;
+    --card-header-size: 0.85rem;
+    --body-size: 0.875rem;
+    --small-size: 0.75rem;
+    --radius: 8px;
+    --gap: 0.75rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-page: #0f172a;
+      --bg-card: #1e293b;
+      --bg-header: #1e293b;
+      --bg-workflow: #1e293b;
+      --text-main: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --border-header: #475569;
+      --shadow: rgba(0,0,0,0.3);
+    }
+  }
+
+  /* ════════════════════════════════════════════
+     BASE & RESET
+  ════════════════════════════════════════════ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text-main);
+    line-height: 1.5;
+    background: var(--bg-page);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ════════════════════════════════════════════
+     SCROLL TO TOP BUTTON
+  ════════════════════════════════════════════ */
+  #scroll-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-blue);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px var(--shadow);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    z-index: 1000;
+    transition: opacity 0.3s, transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #scroll-top:active { transform: scale(0.95); }
+  #scroll-top.visible { display: flex; }
+
+  /* ════════════════════════════════════════════
+     PAGE CONTAINER
+  ════════════════════════════════════════════ */
+  .page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ════════════════════════════════════════════
+     HEADER
+  ════════════════════════════════════════════ */
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-header);
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+  }
+
+  .page-header h1 {
+    font-size: var(--header-size);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+
+  .page-header h1 small {
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+  }
+
+  .header-meta {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .header-meta span {
+    display: inline-block;
+    background: var(--bg-header);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--small-size);
+    color: var(--text-secondary);
+  }
+
+  .page-label {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ════════════════════════════════════════════
+     GRIDS — Mobile-first
+  ════════════════════════════════════════════ */
+  .grid-3, .grid-4 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap);
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ════════════════════════════════════════════
+     CARD
+  ════════════════════════════════════════════ */
+  .card {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+
+  .card-header {
+    padding: 0.5rem 0.75rem;
+    font-size: var(--card-header-size);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .card-body {
+    padding: 0.5rem 0.75rem 0.75rem;
+    flex: 1;
+    font-size: var(--body-size);
+  }
+
+  .card-body .group-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0.5rem 0 0.25rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.15rem;
+  }
+  .card-body .group-label:first-child { margin-top: 0; }
+
+  .binding {
+    display: flex;
+    align-items: baseline;
+    padding: 0.35rem 0;
+    gap: 0.5rem;
+    min-height: 44px;
+  }
+
+  .binding .key {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--body-size);
+    white-space: nowrap;
+    min-width: 5rem;
+    color: var(--text-main);
+  }
+
+  .binding .desc {
+    color: var(--text-secondary);
+    font-size: var(--body-size);
+    line-height: 1.4;
+  }
+
+  /* ════════════════════════════════════════════
+     CARD COLORS
+  ════════════════════════════════════════════ */
+  .card-blue .card-header   { background: var(--color-blue); color: #fff; }
+  .card-blue .card-body     { background: var(--bg-card); }
+  .card-blue { border-color: var(--color-blue); }
+
+  .card-teal .card-header   { background: var(--color-teal); color: #fff; }
+  .card-teal .card-body     { background: var(--bg-card); }
+  .card-teal { border-color: var(--color-teal); }
+
+  .card-amber .card-header  { background: var(--color-amber); color: #fff; }
+  .card-amber .card-body    { background: var(--bg-card); }
+  .card-amber { border-color: var(--color-amber); }
+
+  .card-violet .card-header { background: var(--color-violet); color: #fff; }
+  .card-violet .card-body   { background: var(--bg-card); }
+  .card-violet { border-color: var(--color-violet); }
+
+  .card-rose .card-header   { background: var(--color-rose); color: #fff; }
+  .card-rose .card-body     { background: var(--bg-card); }
+  .card-rose { border-color: var(--color-rose); }
+
+  .card-slate .card-header  { background: var(--color-slate); color: #fff; }
+  .card-slate .card-body    { background: var(--bg-card); }
+  .card-slate { border-color: var(--color-slate); }
+
+  .card-green .card-header  { background: var(--color-green); color: #fff; }
+  .card-green .card-body    { background: var(--bg-card); }
+  .card-green { border-color: var(--color-green); }
+
+  /* ════════════════════════════════════════════
+     WORKFLOW
+  ════════════════════════════════════════════ */
+  .workflow-box {
+    flex-shrink: 0;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-workflow);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .workflow-box h2 {
+    font-size: var(--body-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .workflow-steps {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .wf-step {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    font-size: var(--body-size);
+    flex-shrink: 0;
+    min-height: 44px;
+  }
+
+  .wf-step .k {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--body-size);
+    color: var(--text-main);
+  }
+  .wf-step .l {
+    color: var(--text-muted);
+    font-size: var(--small-size);
+  }
+
+  .wf-arrow {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    flex-shrink: 0;
+  }
+
+  .wf-example {
+    margin-top: 0.5rem;
+    font-size: var(--small-size);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    background: var(--bg-header);
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    display: inline-block;
+    word-break: break-all;
+  }
+
+  .wf-example .hl { color: var(--color-violet); font-weight: 700; }
+
+  .mini-note {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  /* ════════════════════════════════════════════
+     TABLET BREAKPOINT
+  ════════════════════════════════════════════ */
+  @media (min-width: 768px) {
+    .page {
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid-3 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .grid-4 {
+      grid-template-columns: 1fr 1fr;
+    }
+    .page-header {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+  }
+
+  /* ════════════════════════════════════════════
+     DESKTOP BREAKPOINT
+  ════════════════════════════════════════════ */
+  @media (min-width: 1024px) {
+    .grid-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .grid-4 {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+
+  /* ════════════════════════════════════════════
+     ESSENTIAL BADGE
+  ════════════════════════════════════════════ */
+  .binding.essential .key::after {
+    content: "★";
+    font-size: 0.55em;
+    color: var(--color-amber);
+    margin-left: 0.35em;
+    vertical-align: super;
+    line-height: 1;
+  }
+
+  .essential-legend {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-align: right;
+  }
+
+  .essential-legend .star {
+    color: var(--color-amber);
+    font-size: 0.8em;
+  }
+
+  /* ════════════════════════════════════════════
+     PREFIX TOGGLE
+  ════════════════════════════════════════════ */
+  .key-prefix { display: none; }
+  body.show-full-prefix .key-prefix {
+    display: inline;
+    font-weight: 700;
+  }
+
+  .prefix-toggle {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    font-size: var(--small-size);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .prefix-toggle button {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: var(--small-size);
+    cursor: pointer;
+    font-family: var(--font-mono);
+  }
+
+  .prefix-toggle button.active {
+    background: var(--color-blue);
+    color: #fff;
+    border-color: var(--color-blue);
+  }
+
+  @media (max-width: 640px) {
+    .prefix-toggle {
+      flex: 1 1 100%;
+      justify-content: flex-end;
+    }
+    .prefix-toggle > span:first-child { display: none; }
+    .prefix-toggle button { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+  }
+
+  /* ════════════════════════════════════════════
+     SEARCH BAR
+  ════════════════════════════════════════════ */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--bg-page);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-bar input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: var(--body-size);
+    font-family: var(--font-body);
+    background: var(--bg-card);
+    color: var(--text-main);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .search-bar input:focus {
+    outline: none;
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+
+  .search-bar input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .search-bar > button {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .search-bar button:active {
+    background: var(--bg-header);
+  }
+
+  .search-bar #search-count {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 3.5rem;
+    text-align: center;
+  }
+
+  /* ════════════════════════════════════════════
+     TOOL SELECTOR
+  ════════════════════════════════════════════ */
+  .tool-selector {
+    position: sticky;
+    top: calc(36px + 1rem);
+    z-index: 199;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 1rem;
+    background: var(--bg-page);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tool-selector button {
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: var(--small-size);
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .tool-selector button:hover:not(:disabled) {
+    background: var(--bg-header);
+    color: var(--text-secondary);
+  }
+
+  .tool-selector button.active {
+    background: var(--color-blue);
+    color: #fff;
+    border-color: var(--color-blue);
+  }
+
+  .tool-selector button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .tool-section {
+    display: block;
+  }
+
+  .tool-section[hidden] {
+    display: none !important;
+  }
+
+  .plugin-badge {
+    font-size: 0.75em;
+    margin-left: 0.3em;
+    vertical-align: super;
+  }
+
+  /* ════════════════════════════════════════════
+     NOMENCLATURE / LEGEND
+  ════════════════════════════════════════════ */
+  .page-legend {
+    flex-shrink: 0;
+    margin-bottom: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-header);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: var(--small-size);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .page-legend kbd {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--small-size);
+    background: var(--bg-card);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+
+  .page-legend .legend-sep {
+    color: var(--text-muted);
+    margin: 0 0.3rem;
+  }
+
+  abbr[title] {
+    text-decoration: underline dotted;
+    text-decoration-color: var(--text-muted);
+    cursor: help;
+  }
+
+  /* ── filter states ── */
+  .binding.hidden { display: none; }
+  .card.filtered-out { display: none; }
+  .group-label.hidden { display: none; }
+  mark.search-match {
+    background: #fef08a;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    mark.search-match { background: #854d0e; color: #fff; }
+  }
+
+  /* ── no results ── */
+  #no-results {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: var(--body-size);
+  }
+  #no-results[hidden] { display: none; }
+  #no-results .term {
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  /* ════════════════════════════════════════════
+     PRINT STYLES
+  ════════════════════════════════════════════ */
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    body {
+      background: #fff !important;
+      color: #1e293b !important;
+    }
+    .page {
+      width: 297mm;
+      min-height: 210mm;
+      padding: 1.2cm 1.2cm 1cm;
+      margin: 0;
+      background: #fff !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .grid-3 {
+      grid-template-columns: 1fr 1fr 1fr !important;
+      gap: 5mm !important;
+    }
+    .grid-4 {
+      grid-template-columns: 1fr 1fr 1fr 1fr !important;
+      gap: 5mm !important;
+    }
+    .card {
+      background: #fff !important;
+      box-shadow: none !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    .card-body {
+      background: #f8fafc !important;
+      font-size: 8pt !important;
+    }
+    .card-header {
+      font-size: 9pt !important;
+      padding: 2.5mm 3.5mm !important;
+    }
+    .binding {
+      padding: 0.4mm 0 !important;
+      min-height: auto !important;
+    }
+    .binding .key {
+      font-size: 7.5pt !important;
+      min-width: 20mm !important;
+    }
+    .binding .desc {
+      font-size: 7.5pt !important;
+      color: #475569 !important;
+    }
+    .page-header {
+      padding-bottom: 5mm !important;
+      margin-bottom: 5mm !important;
+    }
+    .page-header h1 {
+      font-size: 21pt !important;
+    }
+    .header-meta {
+      font-size: 8.5pt !important;
+    }
+    .workflow-box {
+      margin-top: 5mm !important;
+      padding: 3mm 4mm !important;
+      background: #f1f5f9 !important;
+    }
+    .workflow-box h2 {
+      font-size: 8.5pt !important;
+    }
+    .wf-step {
+      padding: 1mm 2.5mm !important;
+      min-height: auto !important;
+    }
+    .wf-step .k {
+      font-size: 8pt !important;
+    }
+    .wf-arrow {
+      font-size: 11pt !important;
+    }
+    .wf-example {
+      font-size: 7.5pt !important;
+      padding: 1mm 2.5mm !important;
+    }
+    .page-label {
+      font-size: 7pt !important;
+    }
+    #scroll-top { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<button id="scroll-top" aria-label="Scroll to top">↑</button>
+
+<div class="search-bar">
+  <input type="search" id="search-input" placeholder="Buscar atajo o descripción…" autocomplete="off" enterkeyhint="search">
+  <button id="search-clear" hidden aria-label="Limpiar búsqueda">×</button>
+  <span id="search-count"></span>
+  <div class="prefix-toggle">
+    <span>Mostrar:</span>
+    <button id="prefix-short" class="active" title="Solo la tecla">c</button>
+    <button id="prefix-full" title="Comando completo">[Ctrl + b] + c</button>
+  </div>
+</div>
+<nav class="tool-selector">
+  <button data-tool="tmux" class="active" title="tmux default bindings">tmux</button>
+  <button data-tool="vim" title="Vim default bindings">Vim</button>
+  <button data-tool="nvim" title="NeoVim LSP, Telescope, Terminal">NeoVim</button>
+</nav>
+<div id="no-results" hidden>
+  Sin resultados para <span class="term"></span>
+</div>
+
+<div class="essential-legend">
+  <span class="star">★</span> = esencial — atajos que necesitas el primer día
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 1 — PREFIX Default Bindings                              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="tool-section" data-tool="tmux">
+<div class="page" id="page-prefix">
+
+<div class="page-header">
+  <div>
+    <h1>tmux Default Bindings</h1>
+  </div>
+  <div class="header-meta">
+    PREFIX = <span>Ctrl+b</span><br>
+    <span>PREFIX [</span>copy-mode <span>PREFIX ]</span>pegar <span>PREFIX ?</span>listar atajos
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección tmux:</strong> todos los atajos empiezan con <kbd>PREFIX</kbd> (<kbd>Ctrl+b</kbd>).
+  <span class="legend-sep">|</span>
+  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>M-</kbd> = <kbd>Alt</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>S-</kbd> = <kbd>Shift</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> = flechas del cursor
+  <span class="legend-sep">|</span>
+  <kbd>PgUp</kbd> / <kbd>PgDn</kbd> = <kbd>PageUp</kbd> / <kbd>PageDown</kbd>
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. SESIONES ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Sesiones</div>
+    <div class="card-body">
+      <div class="group-label">Ventanas</div>
+      <div class="binding essential"><span class="key">c</span><span class="desc">Nueva ventana</span></div>
+      <div class="binding"><span class="key">,</span><span class="desc">Renombrar ventana</span></div>
+      <div class="binding"><span class="key">&amp;</span><span class="desc">Matar ventana (confirma)</span></div>
+      <div class="binding"><span class="key">.</span><span class="desc">Mover ventana (prompt índice)</span></div>
+
+      <div class="group-label">Sesión</div>
+      <div class="binding"><span class="key">$</span><span class="desc">Renombrar sesión</span></div>
+      <div class="binding essential"><span class="key">d</span><span class="desc">Desconectar (detach)</span></div>
+      <div class="binding"><span class="key">D</span><span class="desc">Elegir cliente para detach</span></div>
+
+      <div class="group-label">Navegar sesiones</div>
+      <div class="binding"><span class="key">s</span><span class="desc">Árbol de sesiones / ventanas</span></div>
+      <div class="binding"><span class="key">w</span><span class="desc">Árbol de ventanas</span></div>
+      <div class="binding"><span class="key">L</span><span class="desc">Último cliente</span></div>
+      <div class="binding"><span class="key">( / )</span><span class="desc">Cliente anterior / siguiente</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. VENTANAS ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Ventanas</div>
+    <div class="card-body">
+      <div class="group-label">Ir a ventana</div>
+      <div class="binding"><span class="key">0 – 9</span><span class="desc">Ir a ventana por índice</span></div>
+      <div class="binding essential"><span class="key">n / p</span><span class="desc">Siguiente / Anterior</span></div>
+      <div class="binding"><span class="key">l</span><span class="desc">Última ventana (toggle)</span></div>
+      <div class="binding"><span class="key">'</span><span class="desc">Ir a ventana (prompt índice)</span></div>
+      <div class="binding"><span class="key">f</span><span class="desc">Buscar ventana por nombre</span></div>
+
+      <div class="group-label">Con alerta</div>
+      <div class="binding"><span class="key">M-n / M-p</span><span class="desc">Siguiente / Anterior (alerta)</span></div>
+
+      <div class="group-label">Ordenar / Rotar</div>
+      <div class="binding"><span class="key">C-o</span><span class="desc">Rotar ventanas adelante</span></div>
+      <div class="binding"><span class="key">M-o</span><span class="desc">Rotar ventanas atrás</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. DIVIDIR PANELES ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Dividir Paneles</div>
+    <div class="card-body">
+      <div class="group-label">Split</div>
+      <div class="binding essential"><span class="key">"</span><span class="desc">Split horizontal (paneles arriba/abajo)</span></div>
+      <div class="binding essential"><span class="key">%</span><span class="desc">Split vertical (paneles izq./der.)</span></div>
+      <div class="binding"><span class="key">!</span><span class="desc">Break pane → ventana independiente</span></div>
+      <div class="binding essential"><span class="key">z</span><span class="desc">Zoom / Unzoom panel</span></div>
+
+      <div class="group-label">Layout</div>
+      <div class="binding"><span class="key">Space</span><span class="desc">Siguiente layout</span></div>
+      <div class="binding"><span class="key">E</span><span class="desc">Elegir layout (interactivo)</span></div>
+      <div class="binding"><span class="key">M-1</span><span class="desc">Even horizontal</span></div>
+      <div class="binding"><span class="key">M-2</span><span class="desc">Even vertical</span></div>
+      <div class="binding"><span class="key">M-3</span><span class="desc">Main horizontal</span></div>
+      <div class="binding"><span class="key">M-4</span><span class="desc">Main vertical</span></div>
+      <div class="binding"><span class="key">M-5</span><span class="desc">Tiled (mosaico)</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. NAVEGAR PANELES ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Navegar Paneles</div>
+    <div class="card-body">
+      <div class="group-label">Moverse</div>
+      <div class="binding"><span class="key">o</span><span class="desc">Siguiente panel (orden)</span></div>
+      <div class="binding"><span class="key">;</span><span class="desc">Último panel activo</span></div>
+      <div class="binding"><span class="key">q</span><span class="desc">Mostrar números (pulsa N para ir)</span></div>
+      <div class="binding"><span class="key">↑</span><span class="desc">Panel de arriba</span></div>
+      <div class="binding"><span class="key">↓</span><span class="desc">Panel de abajo</span></div>
+      <div class="binding"><span class="key">←</span><span class="desc">Panel izquierdo</span></div>
+      <div class="binding"><span class="key">→</span><span class="desc">Panel derecho</span></div>
+
+      <div class="group-label">Ordenar / Marcar</div>
+      <div class="binding"><span class="key">{ / }</span><span class="desc">Swap arriba / abajo</span></div>
+      <div class="binding"><span class="key">m / M</span><span class="desc">Marcar / Limpiar marca</span></div>
+      <div class="binding"><span class="key">x</span><span class="desc">Matar panel (confirma)</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. REDIMENSIONAR ─── -->
+  <div class="card card-rose">
+    <div class="card-header">Redimensionar</div>
+    <div class="card-body">
+      <div class="group-label">Ajuste fino (±1)</div>
+      <div class="binding"><span class="key">C-↑ / C-↓</span><span class="desc">+1 línea arriba / abajo</span></div>
+      <div class="binding"><span class="key">C-← / C-→</span><span class="desc">+1 columna izq. / der.</span></div>
+
+      <div class="group-label">Ajuste rápido (±5)</div>
+      <div class="binding"><span class="key">M-↑ / M-↓</span><span class="desc">+5 líneas arriba / abajo</span></div>
+      <div class="binding"><span class="key">M-← / M-→</span><span class="desc">+5 columnas izq. / der.</span></div>
+
+      <div class="group-label">Cliente</div>
+      <div class="binding"><span class="key">S-↑ / ← ↓ →</span><span class="desc">Scroll vista 10px</span></div>
+      <div class="binding"><span class="key">Delete (DC)</span><span class="desc">Limpiar scrollback</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. COPIAR, PEGAR & COMANDOS ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Copiar, Pegar &amp; Comandos</div>
+    <div class="card-body">
+      <div class="group-label">Copy / Paste / Buffers</div>
+      <div class="binding essential"><span class="key">[</span><span class="desc">Entrar a copy-mode (scroll)</span></div>
+      <div class="binding essential"><span class="key">]</span><span class="desc">Pegar último buffer</span></div>
+      <div class="binding"><span class="key">PgUp / PageUp</span><span class="desc">Copy-mode + scroll up</span></div>
+      <div class="binding"><span class="key">=</span><span class="desc">Elegir buffer interactivo</span></div>
+      <div class="binding"><span class="key"># / -</span><span class="desc">Listar / Borrar buffer</span></div>
+
+      <div class="group-label">Comandos útiles</div>
+      <div class="binding essential"><span class="key">?</span><span class="desc">Listar todos los atajos</span></div>
+      <div class="binding"><span class="key">:</span><span class="desc">Prompt de comandos tmux</span></div>
+      <div class="binding"><span class="key">r</span><span class="desc">Recargar configuración</span></div>
+      <div class="binding"><span class="key">t</span><span class="desc">Modo reloj</span></div>
+      <div class="binding"><span class="key">i</span><span class="desc">Info de la ventana</span></div>
+      <div class="binding"><span class="key">P</span><span class="desc">Popup en directorio actual</span></div>
+
+      <div class="group-label">Otros</div>
+      <div class="binding"><span class="key">&lt; / &gt;</span><span class="desc">Menú ventana / panel</span></div>
+      <div class="binding"><span class="key">C</span><span class="desc">Customize mode</span></div>
+      <div class="binding"><span class="key">C-z</span><span class="desc">Suspender cliente (fg para volver)</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 2 — Página siguiente: copy-mode (Emacs)</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 2 — Copy Mode (Emacs)                                    -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>tmux copy-mode <small>Emacs</small></h1>
+  </div>
+  <div class="header-meta">
+    <span>PREFIX [</span> entrar &nbsp; <span>PREFIX ]</span> pegar &nbsp; <span>Esc / q</span> salir
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección copy-mode (Emacs):</strong> estos atajos funcionan <em>dentro</em> del modo copia (tras <kbd>PREFIX [</kbd>), sin prefijo.
+  <span class="legend-sep">|</span>
+  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>M-</kbd> = <kbd>Alt</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> = flechas del cursor
+  <span class="legend-sep">|</span>
+  <kbd>Home</kbd> / <kbd>End</kbd> = inicio / fin de línea
+  <span class="legend-sep">|</span>
+  <kbd>PgUp</kbd> / <kbd>PgDn</kbd> = página arriba / abajo
+</div>
+
+<div class="grid-4">
+
+  <!-- ─── NAVEGACIÓN ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Navegación</div>
+    <div class="card-body">
+      <div class="group-label">Movimiento básico</div>
+      <div class="binding"><span class="key">C-b / ←</span><span class="desc">Carácter izq.</span></div>
+      <div class="binding"><span class="key">C-f / →</span><span class="desc">Carácter der.</span></div>
+      <div class="binding"><span class="key">C-p / ↑</span><span class="desc">Línea arriba</span></div>
+      <div class="binding"><span class="key">C-n / ↓</span><span class="desc">Línea abajo</span></div>
+
+      <div class="group-label">Línea y palabra</div>
+      <div class="binding"><span class="key">C-a / Home</span><span class="desc">Inicio de línea</span></div>
+      <div class="binding"><span class="key">C-e / End</span><span class="desc">Fin de línea</span></div>
+      <div class="binding"><span class="key">M-b</span><span class="desc">Palabra atrás</span></div>
+      <div class="binding"><span class="key">M-f</span><span class="desc">Palabra adelante</span></div>
+
+      <div class="group-label">Página y pantalla</div>
+      <div class="binding"><span class="key">C-v / Space / PgDn</span><span class="desc">Página abajo</span></div>
+      <div class="binding"><span class="key">M-v / PgUp</span><span class="desc">Página arriba</span></div>
+      <div class="binding"><span class="key">M-Up / M-Down</span><span class="desc">Media página</span></div>
+      <div class="binding"><span class="key">C-Up / C-Down</span><span class="desc">1 línea arriba/abajo</span></div>
+
+      <div class="group-label">Historial y salto</div>
+      <div class="binding"><span class="key">M-&lt; / M-&gt;</span><span class="desc">Principio / Final</span></div>
+      <div class="binding"><span class="key">M-R / M-r</span><span class="desc">Top / Medio pantalla</span></div>
+      <div class="binding"><span class="key">M-m</span><span class="desc">Inicio indentación</span></div>
+      <div class="binding"><span class="key">M-{ / M-}</span><span class="desc">Párrafo ant. / sig.</span></div>
+      <div class="binding"><span class="key">g (prompt)</span><span class="desc">Ir a línea</span></div>
+    </div>
+  </div>
+
+  <!-- ─── SELECCIONAR & COPIAR ─── -->
+  <div class="card card-green">
+    <div class="card-header">Seleccionar &amp; Copiar</div>
+    <div class="card-body">
+      <div class="group-label">Selección</div>
+      <div class="binding essential"><span class="key">C-Space</span><span class="desc">Iniciar selección</span></div>
+      <div class="binding"><span class="key">C-g</span><span class="desc">Limpiar selección</span></div>
+      <div class="binding"><span class="key">R</span><span class="desc">Modo rectangular (toggle)</span></div>
+      <div class="binding"><span class="key">X</span><span class="desc">Marcar posición</span></div>
+      <div class="binding"><span class="key">M-x</span><span class="desc">Ir a marca</span></div>
+
+      <div class="group-label">Copiar y salir</div>
+      <div class="binding essential"><span class="key">C-w</span><span class="desc">Copiar selección</span></div>
+      <div class="binding"><span class="key">M-w</span><span class="desc">Copiar selección</span></div>
+      <div class="binding"><span class="key">C-k</span><span class="desc">Copiar hasta fin de línea</span></div>
+
+      <div class="group-label">Salir sin copiar</div>
+      <div class="binding essential"><span class="key">Escape / q</span><span class="desc">Cancelar y salir</span></div>
+      <div class="binding"><span class="key">C-c</span><span class="desc">Cancelar y salir</span></div>
+
+      <div class="group-label">Ratón (mouse)</div>
+      <div class="binding"><span class="key">Arrastrar</span><span class="desc">Seleccionar y copiar</span></div>
+      <div class="binding"><span class="key">Doble click</span><span class="desc">Seleccionar palabra</span></div>
+      <div class="binding"><span class="key">Triple click</span><span class="desc">Seleccionar línea</span></div>
+      <div class="binding"><span class="key">Scroll</span><span class="desc">Navegar historial</span></div>
+    </div>
+  </div>
+
+  <!-- ─── BÚSQUEDA & JUMP ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Búsqueda &amp; Jump</div>
+    <div class="card-body">
+      <div class="group-label">Búsqueda incremental</div>
+      <div class="binding"><span class="key">C-r</span><span class="desc">Buscar hacia arriba</span></div>
+      <div class="binding"><span class="key">C-s</span><span class="desc">Buscar hacia abajo</span></div>
+      <div class="binding"><span class="key">n</span><span class="desc">Siguiente coincidencia</span></div>
+      <div class="binding"><span class="key">N</span><span class="desc">Coincidencia anterior</span></div>
+
+      <div class="group-label">Jump (salto por carácter)</div>
+      <div class="binding"><span class="key">f &lt;char&gt;</span><span class="desc">Jump forward al carácter</span></div>
+      <div class="binding"><span class="key">F &lt;char&gt;</span><span class="desc">Jump backward al carácter</span></div>
+      <div class="binding"><span class="key">t &lt;char&gt;</span><span class="desc">Jump to (justo antes)</span></div>
+      <div class="binding"><span class="key">T &lt;char&gt;</span><span class="desc">Jump to backward</span></div>
+      <div class="binding"><span class="key">; / ,</span><span class="desc">Repetir / reverse jump</span></div>
+
+      <div class="group-label">Ir a línea</div>
+      <div class="binding"><span class="key">g (prompt)</span><span class="desc">Ir a número de línea</span></div>
+    </div>
+  </div>
+
+  <!-- ─── BUFFERS & PEGADO ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Buffers &amp; Pegado</div>
+    <div class="card-body">
+      <div class="group-label">Pegar</div>
+      <div class="binding"><span class="key">PREFIX ]</span><span class="desc">Pegar último buffer</span></div>
+      <div class="binding"><span class="key">PREFIX =</span><span class="desc">Elegir buffer para pegar</span></div>
+
+      <div class="group-label">Gestión de buffers</div>
+      <div class="binding"><span class="key">PREFIX #</span><span class="desc">Listar buffers</span></div>
+      <div class="binding"><span class="key">PREFIX -</span><span class="desc">Borrar último buffer</span></div>
+      <div class="binding"><span class="key">: list-buffers</span><span class="desc">Ver buffers por comando</span></div>
+
+      <div class="group-label">Comandos útiles</div>
+      <div class="binding"><span class="key">: capture-pane</span><span class="desc">Capturar salida del panel</span></div>
+      <div class="binding"><span class="key">: save-buffer</span><span class="desc">Guardar buffer a archivo</span></div>
+
+      <div class="mini-note">Buffer tmux ≠ portapapeles del sistema.<br>Usa <code>set -g set-clipboard on</code> para sincronizar.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="workflow-box">
+  <h2>Workflow — Copiar y pegar en 5 pasos</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">PREFIX [</span><span class="l">entrar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-Space</span><span class="l">iniciar selec.</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-f / C-n / ⋯</span><span class="l">extender</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-w</span><span class="l">copiar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">PREFIX ]</span><span class="l">pegar</span></div>
+  </div>
+  <div>
+    <span class="wf-example"><span class="hl">$</span> server error on host <span class="hl">192.168.1.50</span> &nbsp;→&nbsp;
+    PREFIX [ &nbsp; M-b M-b &nbsp; C-Space &nbsp; M-f &nbsp; C-w &nbsp; PREFIX ]
+    </span>
+  </div>
+</div>
+
+<div class="page-label">2 / 2</div>
+</div>
+</div>
+
+<div class="tool-section" data-tool="vim" hidden>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 3 — Vim Default Bindings: Movimiento y Edición            -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>Vim Default Bindings</h1>
+  </div>
+  <div class="header-meta">
+    <span>&lt;leader&gt;</span> = <span>\</span> (por defecto, comúnmente remapeado a <span>Space</span>)
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección Vim:</strong> todos los atajos son <strong>defaults</strong> de Vim/NeoVim vanilla.
+  <span class="legend-sep">|</span>
+  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>M-</kbd> = <kbd>Alt</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>Esc</kbd> = regresar a modo Normal
+  <span class="legend-sep">|</span>
+  <kbd>i</kbd> = modo Insert
+  <span class="legend-sep">|</span>
+  <kbd>v</kbd> = modo Visual
+  <span class="legend-sep">|</span>
+  <kbd>:</kbd> = modo Command-line
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. MOVIMIENTO ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Movimiento</div>
+    <div class="card-body">
+      <div class="group-label">Básico</div>
+      <div class="binding essential"><span class="key">h j k l</span><span class="desc">← ↓ ↑ →</span></div>
+      <div class="binding essential"><span class="key">w / W</span><span class="desc">Palabra adelante (puntuación / espacios)</span></div>
+      <div class="binding essential"><span class="key">b / B</span><span class="desc">Palabra atrás (puntuación / espacios)</span></div>
+      <div class="binding"><span class="key">e / E</span><span class="desc">Final de palabra (puntuación / espacios)</span></div>
+      <div class="binding essential"><span class="key">0 / ^ / $</span><span class="desc">Inicio / 1er carácter / fin de línea</span></div>
+      <div class="binding essential"><span class="key">gg / G</span><span class="desc">Principio / Final del archivo</span></div>
+      <div class="binding"><span class="key">{ / }</span><span class="desc">Párrafo anterior / siguiente</span></div>
+
+      <div class="group-label">Jump</div>
+      <div class="binding"><span class="key">f&lt;char&gt; / F&lt;char&gt;</span><span class="desc">Adelante / Atrás al carácter</span></div>
+      <div class="binding"><span class="key">t&lt;char&gt; / T&lt;char&gt;</span><span class="desc">Hasta justo antes / después</span></div>
+      <div class="binding"><span class="key">; / ,</span><span class="desc">Repetir jump / dirección opuesta</span></div>
+      <div class="binding"><span class="key">%</span><span class="desc">Paréntesis/llave/corchete correspondiente</span></div>
+
+      <div class="group-label">Pantalla</div>
+      <div class="binding"><span class="key">C-u / C-d</span><span class="desc">Media página arriba / abajo</span></div>
+      <div class="binding"><span class="key">zt / zz / zb</span><span class="desc">Cursor arriba / centro / abajo de pantalla</span></div>
+      <div class="binding"><span class="key">H / M / L</span><span class="desc">Primera / Media / Última línea visible</span></div>
+      <div class="binding"><span class="key">C-o / C-i</span><span class="desc">Posición anterior / siguiente (jumplist)</span></div>
+      <div class="binding"><span class="key">g; / g,</span><span class="desc">Cambio anterior / siguiente (change list)</span></div>
+
+      <div class="group-label">Búsqueda rápida</div>
+      <div class="binding"><span class="key">* / #</span><span class="desc">Buscar palabra bajo cursor adelante / atrás</span></div>
+      <div class="binding"><span class="key">g* / g#</span><span class="desc">Ídem sin word boundaries</span></div>
+      <div class="binding"><span class="key">ge / gE</span><span class="desc">Palabra anterior al final</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. EDICIÓN ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Edición</div>
+    <div class="card-body">
+      <div class="group-label">Entrar a Insert</div>
+      <div class="binding essential"><span class="key">i / I</span><span class="desc">Antes del cursor / Inicio de línea</span></div>
+      <div class="binding essential"><span class="key">a / A</span><span class="desc">Después del cursor / Fin de línea</span></div>
+      <div class="binding essential"><span class="key">o / O</span><span class="desc">Nueva línea abajo / arriba</span></div>
+      <div class="binding"><span class="key">Esc</span><span class="desc">Regresar a modo Normal</span></div>
+
+      <div class="group-label">Borrar</div>
+      <div class="binding essential"><span class="key">x / X</span><span class="desc">Borrar carácter bajo cursor / antes</span></div>
+      <div class="binding essential"><span class="key">dd</span><span class="desc">Borrar línea completa</span></div>
+      <div class="binding"><span class="key">D</span><span class="desc">Borrar desde cursor hasta fin de línea</span></div>
+      <div class="binding"><span class="key">J</span><span class="desc">Unir siguiente línea</span></div>
+      <div class="binding"><span class="key">gJ</span><span class="desc">Unir sin insertar espacio</span></div>
+
+      <div class="group-label">Copiar y Pegar</div>
+      <div class="binding essential"><span class="key">yy / Y</span><span class="desc">Copiar línea</span></div>
+      <div class="binding"><span class="key">yw / y$</span><span class="desc">Copiar palabra / hasta fin de línea</span></div>
+      <div class="binding essential"><span class="key">p / P</span><span class="desc">Pegar después / antes del cursor</span></div>
+
+      <div class="group-label">Undo / Redo</div>
+      <div class="binding essential"><span class="key">u</span><span class="desc">Deshacer</span></div>
+      <div class="binding essential"><span class="key">C-r</span><span class="desc">Rehacer</span></div>
+      <div class="binding"><span class="key">.</span><span class="desc">Repetir el último cambio</span></div>
+      <div class="binding"><span class="key">~</span><span class="desc">Cambiar mayúsculas/minúsculas del carácter</span></div>
+      <div class="binding"><span class="key">r&lt;char&gt;</span><span class="desc">Reemplazar carácter bajo cursor</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. CAMBIOS COMPUESTOS ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Cambios Compuestos</div>
+    <div class="card-body">
+      <div class="group-label">Change</div>
+      <div class="binding essential"><span class="key">cw / cW</span><span class="desc">Cambiar palabra</span></div>
+      <div class="binding essential"><span class="key">ciw / ciW</span><span class="desc">Cambiar "inner" palabra</span></div>
+      <div class="binding"><span class="key">ci( / ci{ / ci[ / ci" / ci'</span><span class="desc">Cambiar dentro de delimitadores</span></div>
+      <div class="binding"><span class="key">ca( / ca{ / ca[ / ca" / ca'</span><span class="desc">Cambiar dentro + delimitadores</span></div>
+      <div class="binding"><span class="key">c$ / C</span><span class="desc">Cambiar desde cursor hasta fin</span></div>
+      <div class="binding"><span class="key">S / cc</span><span class="desc">Borrar línea y entrar en Insert</span></div>
+      <div class="binding"><span class="key">s</span><span class="desc">Borrar carácter y entrar en Insert</span></div>
+      <div class="binding"><span class="key">ct&lt;char&gt; / cf&lt;char&gt;</span><span class="desc">Cambiar hasta / hasta e incluyendo</span></div>
+      <div class="binding"><span class="key">R</span><span class="desc">Sobreescribir múltiples caracteres</span></div>
+
+      <div class="group-label">Indent y Formato</div>
+      <div class="binding"><span class="key">>> / <<</span><span class="desc">Indentar / Desindentar línea</span></div>
+      <div class="binding"><span class="key">=</span><span class="desc">Auto-indentar línea</span></div>
+      <div class="binding"><span class="key">gg=G</span><span class="desc">Auto-indentar todo el archivo</span></div>
+      <div class="binding"><span class="key">gq</span><span class="desc">Formatear línea hasta textwidth</span></div>
+      <div class="binding"><span class="key">C-a / C-x</span><span class="desc">Incrementar / Decrementar número</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. VISUAL MODE ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Visual Mode</div>
+    <div class="card-body">
+      <div class="group-label">Entrar</div>
+      <div class="binding essential"><span class="key">v</span><span class="desc">Selección carácter a carácter</span></div>
+      <div class="binding essential"><span class="key">V</span><span class="desc">Selección por líneas</span></div>
+      <div class="binding"><span class="key">C-v</span><span class="desc">Selección rectangular (bloque)</span></div>
+      <div class="binding"><span class="key">gv</span><span class="desc">Repetir última selección</span></div>
+      <div class="binding"><span class="key">o / O</span><span class="desc">Alternar esquina de la selección</span></div>
+      <div class="binding"><span class="key">Esc</span><span class="desc">Salir de Visual</span></div>
+
+      <div class="group-label">Operaciones</div>
+      <div class="binding"><span class="key">gU / gu</span><span class="desc">Mayúsculas / Minúsculas en selección</span></div>
+      <div class="binding"><span class="key">> / <</span><span class="desc">Indentar / Desindentar selección</span></div>
+      <div class="binding"><span class="key">=</span><span class="desc">Auto-indentar selección</span></div>
+      <div class="binding"><span class="key">J</span><span class="desc">Unir líneas en selección</span></div>
+      <div class="binding"><span class="key">y</span><span class="desc">Copiar selección</span></div>
+      <div class="binding"><span class="key">d / x</span><span class="desc">Borrar selección</span></div>
+      <div class="binding"><span class="key">c</span><span class="desc">Cambiar selección</span></div>
+      <div class="binding"><span class="key">r&lt;char&gt;</span><span class="desc">Reemplazar cada carácter</span></div>
+      <div class="binding"><span class="key">!</span><span class="desc">Filtrar selección por comando externo</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. BÚSQUEDA ─── -->
+  <div class="card card-rose">
+    <div class="card-header">Búsqueda y Reemplazo</div>
+    <div class="card-body">
+      <div class="group-label">Buscar</div>
+      <div class="binding essential"><span class="key">/pattern</span><span class="desc">Búsqueda hacia adelante</span></div>
+      <div class="binding"><span class="key">?pattern</span><span class="desc">Búsqueda hacia atrás</span></div>
+      <div class="binding essential"><span class="key">n / N</span><span class="desc">Siguiente / Anterior coincidencia</span></div>
+      <div class="binding"><span class="key">:noh</span><span class="desc">Quitar resaltado</span></div>
+
+      <div class="group-label">Reemplazar</div>
+      <div class="binding"><span class="key">:%s/old/new/g</span><span class="desc">Reemplazar en todo el archivo</span></div>
+      <div class="binding"><span class="key">:%s/old/new/gc</span><span class="desc">Reemplazar con confirmación</span></div>
+      <div class="binding"><span class="key">:%g/pattern/cmd</span><span class="desc">Ejecutar comando en líneas que coinciden</span></div>
+      <div class="binding"><span class="key">:%v/pattern/cmd</span><span class="desc">Ejecutar en líneas que NO coinciden</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. MARCAS Y REGISTROS ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Marcas y Registros</div>
+    <div class="card-body">
+      <div class="group-label">Marcas</div>
+      <div class="binding"><span class="key">m{a-z}</span><span class="desc">Marca en el archivo actual</span></div>
+      <div class="binding"><span class="key">m{A-Z}</span><span class="desc">Marca entre archivos (global)</span></div>
+      <div class="binding"><span class="key">'{mark}</span><span class="desc">Ir a la marca</span></div>
+      <div class="binding"><span class="key">:marks</span><span class="desc">Mostrar todas las marcas</span></div>
+
+      <div class="group-label">Registros</div>
+      <div class="binding"><span class="key">"{reg}</span><span class="desc">Seleccionar registro</span></div>
+      <div class="binding"><span class="key">"xyy / "xp</span><span class="desc">Copiar/Pegar usando registro x</span></div>
+      <div class="binding"><span class="key">q{reg}</span><span class="desc">Graba macro en registro</span></div>
+      <div class="binding"><span class="key">q</span><span class="desc">Detiene grabación</span></div>
+      <div class="binding"><span class="key">@{reg}</span><span class="desc">Ejecutar macro del registro</span></div>
+      <div class="binding"><span class="key">@@</span><span class="desc">Repetir última macro</span></div>
+      <div class="binding"><span class="key">:reg</span><span class="desc">Ver contenido de registros</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 2 — Página siguiente: Ventanas, Tabs, Ex Commands</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 4 — Vim: Ventanas, Tabs, Ex Commands, Macros              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>Vim Default Bindings <small>Avanzado</small></h1>
+  </div>
+  <div class="header-meta">
+    <span>C-w</span> ventanas &nbsp; <span>gt</span> tabs &nbsp; <span>:</span> comandos
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección Vim Avanzado:</strong> ventanas, tabs, comandos Ex, y macros.
+  <span class="legend-sep">|</span>
+  <kbd>C-w</kbd> = <kbd>Ctrl+w</kbd> (combinación, no prefijo)
+  <span class="legend-sep">|</span>
+  <kbd>:</kbd> = modo Command-line
+  <span class="legend-sep">|</span>
+  <kbd>q</kbd> = grabar macro
+</div>
+
+<div class="grid-4">
+
+  <!-- ─── 7. VENTANAS ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Ventanas (Splits)</div>
+    <div class="card-body">
+      <div class="group-label">Crear</div>
+      <div class="binding essential"><span class="key">C-w s</span><span class="desc">Dividir horizontal</span></div>
+      <div class="binding essential"><span class="key">C-w v</span><span class="desc">Dividir vertical</span></div>
+      <div class="binding"><span class="key">C-w n</span><span class="desc">Nueva ventana</span></div>
+
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">C-w hjkl</span><span class="desc">Ir a ventana izq/abajo/arriba/der</span></div>
+      <div class="binding"><span class="key">C-w w / W</span><span class="desc">Siguiente / Anterior ventana</span></div>
+      <div class="binding"><span class="key">C-w p</span><span class="desc">Ventana anterior</span></div>
+      <div class="binding"><span class="key">C-w t</span><span class="desc">Ir a ventana top-left</span></div>
+
+      <div class="group-label">Mover y Redimensionar</div>
+      <div class="binding"><span class="key">C-w HJKL</span><span class="desc">Mover ventana a borde</span></div>
+      <div class="binding"><span class="key">C-w r / R</span><span class="desc">Rotar ventanas</span></div>
+      <div class="binding"><span class="key">C-w =</span><span class="desc">Igualar tamaños</span></div>
+      <div class="binding"><span class="key">C-w _</span><span class="desc">Maximizar altura</span></div>
+      <div class="binding"><span class="key">C-w |</span><span class="desc">Maximizar ancho</span></div>
+
+      <div class="group-label">Cerrar</div>
+      <div class="binding"><span class="key">C-w q / c</span><span class="desc">Cerrar ventana</span></div>
+      <div class="binding"><span class="key">C-w o</span><span class="desc">Cerrar todas menos la actual</span></div>
+      <div class="binding"><span class="key">C-w T</span><span class="desc">Mover ventana a tab</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 8. TABS ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Tabs</div>
+    <div class="card-body">
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">gt / gT</span><span class="desc">Siguiente / Anterior tab</span></div>
+      <div class="binding"><span class="key">Ngt</span><span class="desc">Ir a tab número N</span></div>
+      <div class="binding"><span class="key">:tabn / :tabp</span><span class="desc">= gt / gT</span></div>
+
+      <div class="group-label">Crear y Cerrar</div>
+      <div class="binding"><span class="key">:tabnew [file]</span><span class="desc">Nueva tab</span></div>
+      <div class="binding"><span class="key">:tabe file</span><span class="desc">Abrir archivo en nueva tab</span></div>
+      <div class="binding"><span class="key">:tab split</span><span class="desc">Abrir archivo en nueva tab</span></div>
+      <div class="binding"><span class="key">:tabclose</span><span class="desc">Cerrar tab actual</span></div>
+      <div class="binding"><span class="key">:tabs</span><span class="desc">Ver todas las tabs</span></div>
+      <div class="binding"><span class="key">:tabm N</span><span class="desc">Mover tab a posición N</span></div>
+      <div class="binding"><span class="key">:tabdo cmd</span><span class="desc">Ejecutar comando en todas las tabs</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 9. EX COMMANDS ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Ex Commands</div>
+    <div class="card-body">
+      <div class="group-label">Archivo</div>
+      <div class="binding essential"><span class="key">:w</span><span class="desc">Guardar</span></div>
+      <div class="binding essential"><span class="key">:q</span><span class="desc">Salir</span></div>
+      <div class="binding"><span class="key">:wq / :x</span><span class="desc">Guardar y salir</span></div>
+      <div class="binding"><span class="key">:q! / ZQ</span><span class="desc">Salir sin guardar</span></div>
+      <div class="binding"><span class="key">:e file</span><span class="desc">Abrir archivo</span></div>
+      <div class="binding"><span class="key">:e!</span><span class="desc">Recargar (descartar cambios)</span></div>
+      <div class="binding"><span class="key">:w file</span><span class="desc">Guardar en archivo específico</span></div>
+      <div class="binding"><span class="key">:r file</span><span class="desc">Insertar contenido de archivo</span></div>
+      <div class="binding"><span class="key">:r !cmd</span><span class="desc">Insertar salida de comando</span></div>
+
+      <div class="group-label">Buffers</div>
+      <div class="binding"><span class="key">:bn / :bp</span><span class="desc">Siguiente / Anterior buffer</span></div>
+      <div class="binding"><span class="key">:bd</span><span class="desc">Cerrar buffer</span></div>
+      <div class="binding"><span class="key">:ls</span><span class="desc">Listar buffers</span></div>
+      <div class="binding"><span class="key">:b N</span><span class="desc">Ir a buffer número N</span></div>
+      <div class="binding"><span class="key">:e#</span><span class="desc">Reabrir último archivo</span></div>
+
+      <div class="group-label">Configuración</div>
+      <div class="binding"><span class="key">:set nu/nonu</span><span class="desc">Mostrar/Ocultar números</span></div>
+      <div class="binding"><span class="key">:set hls/nohls</span><span class="desc">Resaltar búsqueda on/off</span></div>
+      <div class="binding"><span class="key">:set paste/nopaste</span><span class="desc">Modo pegado (sin auto-indent)</span></div>
+      <div class="binding"><span class="key">:help</span><span class="desc">Ayuda (C-] seguir links, C-t volver)</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 10. MACROS ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Macros</div>
+    <div class="card-body">
+      <div class="group-label">Grabar</div>
+      <div class="binding"><span class="key">q{reg}</span><span class="desc">Graba macro en registro</span></div>
+      <div class="binding"><span class="key">q</span><span class="desc">Detiene grabación</span></div>
+      <div class="binding"><span class="key">q{0-9a-zA-Z"}</span><span class="desc">Especificar registro</span></div>
+
+      <div class="group-label">Ejecutar</div>
+      <div class="binding"><span class="key">@{reg}</span><span class="desc">Ejecutar macro del registro</span></div>
+      <div class="binding"><span class="key">@@</span><span class="desc">Repetir última macro</span></div>
+      <div class="binding"><span class="key">5@@</span><span class="desc">Repetir macro 5 veces</span></div>
+      <div class="binding"><span class="key">:{range}normal @{reg}</span><span class="desc">Ejecutar macro en rango</span></div>
+
+      <div class="group-label">Gestión</div>
+      <div class="binding"><span class="key">:reg</span><span class="desc">Ver contenido de registros</span></div>
+      <div class="binding"><span class="key">:let @a='...'</span><span class="desc">Asignar texto a registro</span></div>
+      <div class="binding"><span class="key">:@{reg}</span><span class="desc">Ejecutar macro desde ex</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="workflow-box">
+  <h2>Workflow — Buscar y reemplazar en 5 pasos</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">/pattern</span><span class="l">buscar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">n / N</span><span class="l">navegar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:%s/old/new/g</span><span class="l">reemplazar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">u</span><span class="l">deshacer</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:w</span><span class="l">guardar</span></div>
+  </div>
+  <div>
+    <span class="wf-example">:%s/foo/bar/gc &nbsp;→&nbsp; reemplazar "foo" por "bar" con confirmación</span>
+  </div>
+</div>
+
+<div class="page-label">2 / 2</div>
+</div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 5 — NeoVim: LSP, Telescope, Terminal                      -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="tool-section" data-tool="nvim" hidden>
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>NeoVim <small>LSP, Telescope, Terminal</small></h1>
+  </div>
+  <div class="header-meta">
+    🔌 = plugin requerido &nbsp; ■ = built-in NeoVim
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección NeoVim:</strong> LSP, Telescope, y Terminal son específicos de NeoVim.
+  <span class="legend-sep">|</span>
+  🔌 = Requiere plugin (LSP: nvim-lspconfig, Telescope: telescope.nvim)
+  <span class="legend-sep">|</span>
+  ■ = Built-in de NeoVim (no requiere plugin)
+  <span class="legend-sep">|</span>
+  <kbd>&lt;leader&gt;</kbd> = <kbd>\</kbd> (por defecto, comúnmente <kbd>Space</kbd>)
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. LSP 🔌 ─── -->
+  <div class="card card-blue">
+    <div class="card-header">LSP 🔌</div>
+    <div class="card-body">
+      <div class="group-label">Navegación</div>
+      <div class="binding essential"><span class="key">gd</span><span class="desc">Ir a definición</span></div>
+      <div class="binding"><span class="key">gD</span><span class="desc">Ir a declaración</span></div>
+      <div class="binding"><span class="key">gi</span><span class="desc">Ir a implementación</span></div>
+      <div class="binding"><span class="key">gr</span><span class="desc">Referencias</span></div>
+      <div class="binding essential"><span class="key">K</span><span class="desc">Hover (documentación)</span></div>
+      <div class="binding"><span class="key">C-k</span><span class="desc">Signature help</span></div>
+
+      <div class="group-label">Diagnósticos</div>
+      <div class="binding"><span class="key">[d / ]d</span><span class="desc">Diagnóstico anterior / siguiente</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;e</span><span class="desc">Ver diagnósticos (ventana flotante)</span></div>
+      <div class="binding"><span class="key">:LspInfo</span><span class="desc">Info de servidores LSP</span></div>
+
+      <div class="group-label">Acciones</div>
+      <div class="binding"><span class="key">&lt;leader&gt;rn</span><span class="desc">Renombrar símbolo</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;ca</span><span class="desc">Code action</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f</span><span class="desc">Formatear buffer</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wa</span><span class="desc">Agregar carpeta al workspace</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wr</span><span class="desc">Remover carpeta del workspace</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;wl</span><span class="desc">Listar carpetas del workspace</span></div>
+
+      <div class="group-label">Comandos</div>
+      <div class="binding"><span class="key">:LspStart</span><span class="desc">Iniciar servidor</span></div>
+      <div class="binding"><span class="key">:LspStop</span><span class="desc">Detener servidor</span></div>
+      <div class="binding"><span class="key">:LspRestart</span><span class="desc">Reiniciar servidor</span></div>
+      <div class="binding"><span class="key">:LspLog</span><span class="desc">Ver log de LSP</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. TELESCOPE 🔌 ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Telescope 🔌</div>
+    <div class="card-body">
+      <div class="group-label">Keymaps de la comunidad</div>
+      <div class="binding essential"><span class="key">&lt;leader&gt;ff</span><span class="desc">Buscar archivos</span></div>
+      <div class="binding essential"><span class="key">&lt;leader&gt;fg</span><span class="desc">Live grep</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fb</span><span class="desc">Buffers abiertos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fh</span><span class="desc">Help tags</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fr</span><span class="desc">Archivos recientes</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fc</span><span class="desc">Comandos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fs</span><span class="desc">Buscar string bajo cursor</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fd</span><span class="desc">Diagnósticos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fm</span><span class="desc">Marcas</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fk</span><span class="desc">Keymaps</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f/</span><span class="desc">Búsqueda en buffer actual</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f:</span><span class="desc">Historial de comandos</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;f"</span><span class="desc">Registros</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fj</span><span class="desc">Jump list</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;ft</span><span class="desc">Buscar todo (multi)</span></div>
+      <div class="binding"><span class="key">&lt;leader&gt;fp</span><span class="desc">Mostrar todos los pickers</span></div>
+
+      <div class="group-label">Dentro del picker</div>
+      <div class="binding"><span class="key">C-j / C-k</span><span class="desc">Siguiente / Anterior resultado</span></div>
+      <div class="binding"><span class="key">C-v</span><span class="desc">Abrir en split vertical</span></div>
+      <div class="binding"><span class="key">C-x</span><span class="desc">Abrir en split horizontal</span></div>
+      <div class="binding"><span class="key">C-t</span><span class="desc">Abrir en nueva tab</span></div>
+      <div class="binding"><span class="key">Tab</span><span class="desc">Seleccionar/deseleccionar (multiselect)</span></div>
+      <div class="binding"><span class="key">C-q</span><span class="desc">Enviar selección a quickfix</span></div>
+      <div class="binding"><span class="key">Esc / C-c</span><span class="desc">Cerrar</span></div>
+      <div class="binding"><span class="key">?</span><span class="desc">Ayuda de keymaps</span></div>
+
+      <div class="group-label">Comandos :Telescope</div>
+      <div class="binding"><span class="key">:Telescope find_files</span><span class="desc">= &lt;leader&gt;ff</span></div>
+      <div class="binding"><span class="key">:Telescope live_grep</span><span class="desc">= &lt;leader&gt;fg</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_references</span><span class="desc">= gr</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_definitions</span><span class="desc">= gd</span></div>
+      <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
+      <div class="binding"><span class="key">:Telescope resume</span><span class="desc">Reanudar último picker</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. TERMINAL ■ ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Terminal ■</div>
+    <div class="card-body">
+      <div class="group-label">Abrir</div>
+      <div class="binding essential"><span class="key">:term</span><span class="desc">Abrir terminal en buffer</span></div>
+      <div class="binding"><span class="key">:split term://bash</span><span class="desc">Terminal en split horizontal</span></div>
+      <div class="binding"><span class="key">:vsplit term://bash</span><span class="desc">Terminal en split vertical</span></div>
+
+      <div class="group-label">Navegar</div>
+      <div class="binding essential"><span class="key">C-\ C-n</span><span class="desc">Salir de modo terminal a Normal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;N</span><span class="desc">Alternativo: salir a Normal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;hjkl</span><span class="desc">Navegar entre terminal y ventanas</span></div>
+      <div class="binding"><span class="key">i / a</span><span class="desc">Entrar en modo terminal (insert)</span></div>
+
+      <div class="group-label">Cerrar</div>
+      <div class="binding"><span class="key">:q</span><span class="desc">Cerrar buffer de terminal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;q</span><span class="desc">Cerrar terminal</span></div>
+      <div class="binding"><span class="key">&lt;C-w&gt;c</span><span class="desc">Cerrar terminal</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. NEOVIM BUILT-IN ■ ─── -->
+  <div class="card card-violet">
+    <div class="card-header">NeoVim Built-in ■</div>
+    <div class="card-body">
+      <div class="group-label">Diagnóstico</div>
+      <div class="binding"><span class="key">:checkhealth</span><span class="desc">Diagnóstico del sistema</span></div>
+      <div class="binding"><span class="key">:checkhealth lsp</span><span class="desc">Diagnóstico de LSP</span></div>
+      <div class="binding"><span class="key">:checkhealth provider</span><span class="desc">Diagnóstico de providers</span></div>
+      <div class="binding"><span class="key">:messages</span><span class="desc">Ver mensajes/log recientes</span></div>
+      <div class="binding"><span class="key">:messages clear</span><span class="desc">Limpiar mensajes</span></div>
+
+      <div class="group-label">Treesitter</div>
+      <div class="binding"><span class="key">:TSInstall &lt;lang&gt;</span><span class="desc">Instalar parser</span></div>
+      <div class="binding"><span class="key">:TSUpdate</span><span class="desc">Actualizar parsers</span></div>
+      <div class="binding"><span class="key">:TSInstallInfo</span><span class="desc">Listar parsers disponibles</span></div>
+      <div class="binding"><span class="key">:TSModuleInfo</span><span class="desc">Info de módulos</span></div>
+      <div class="binding"><span class="key">:InspectTree</span><span class="desc">Inspeccionar árbol sintáctico</span></div>
+      <div class="binding"><span class="key">:Inspect</span><span class="desc">Ver highlight bajo cursor</span></div>
+      <div class="binding"><span class="key">:EditQuery</span><span class="desc">Editar query treesitter</span></div>
+
+      <div class="group-label">Utilidades</div>
+      <div class="binding"><span class="key">:registers</span><span class="desc">Ver registros</span></div>
+      <div class="binding"><span class="key">:jumps</span><span class="desc">Ver jump list</span></div>
+      <div class="binding"><span class="key">:changes</span><span class="desc">Ver change list</span></div>
+      <div class="binding"><span class="key">:oldfiles</span><span class="desc">Archivos recientes</span></div>
+      <div class="binding"><span class="key">:browse oldfiles</span><span class="desc">Navegar archivos recientes</span></div>
+      <div class="binding"><span class="key">:Man</span><span class="desc">Ver man pages</span></div>
+      <div class="binding"><span class="key">:make</span><span class="desc">Ejecutar make</span></div>
+      <div class="binding"><span class="key">:grep</span><span class="desc">Ejecutar grep (vimgrep)</span></div>
+      <div class="binding"><span class="key">:copen</span><span class="desc">Abrir ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cnext / :cprev</span><span class="desc">Siguiente / Anterior quickfix</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. QUICKFIX/LOCATION LIST ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Quickfix & Location List</div>
+    <div class="card-body">
+      <div class="group-label">Quickfix</div>
+      <div class="binding"><span class="key">:copen</span><span class="desc">Abrir ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cclose</span><span class="desc">Cerrar ventana quickfix</span></div>
+      <div class="binding"><span class="key">:cnext / :cn</span><span class="desc">Siguiente en quickfix</span></div>
+      <div class="binding"><span class="key">:cprev / :cp</span><span class="desc">Anterior en quickfix</span></div>
+      <div class="binding"><span class="key">:cfirst / :clast</span><span class="desc">Primero / Último en quickfix</span></div>
+      <div class="binding"><span class="key">:cc N</span><span class="desc">Ir a item N en quickfix</span></div>
+      <div class="binding"><span class="key">:colder / :cnewer</span><span class="desc">Lista quickfix anterior / siguiente</span></div>
+      <div class="binding"><span class="key">:cdo cmd</span><span class="desc">Ejecutar comando en cada item</span></div>
+      <div class="binding"><span class="key">:cfdo cmd</span><span class="desc">Ejecutar en cada archivo</span></div>
+
+      <div class="group-label">Location List</div>
+      <div class="binding"><span class="key">:lopen</span><span class="desc">Abrir ventana location</span></div>
+      <div class="binding"><span class="key">:lclose</span><span class="desc">Cerrar ventana location</span></div>
+      <div class="binding"><span class="key">:lnext / :lprev</span><span class="desc">Siguiente / Anterior location</span></div>
+      <div class="binding"><span class="key">:lfirst / :llast</span><span class="desc">Primero / Último location</span></div>
+      <div class="binding"><span class="key">:ll N</span><span class="desc">Ir a item N en location</span></div>
+      <div class="binding"><span class="key">:ldo cmd</span><span class="desc">Ejecutar comando en cada item</span></div>
+      <div class="binding"><span class="key">:lfdo cmd</span><span class="desc">Ejecutar en cada archivo</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. GIT (vía Telescope) ─── -->
+  <div class="card card-green">
+    <div class="card-header">Git 🔌 (Telescope)</div>
+    <div class="card-body">
+      <div class="group-label">Telescope Git</div>
+      <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
+      <div class="binding"><span class="key">:Telescope git_branches</span><span class="desc">Ramas git</span></div>
+      <div class="binding"><span class="key">:Telescope git_commits</span><span class="desc">Commits git</span></div>
+      <div class="binding"><span class="key">:Telescope git_status</span><span class="desc">Estado git</span></div>
+      <div class="binding"><span class="key">:Telescope git_stash</span><span class="desc">Stash git</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 1</div>
+</div>
+
+</div>
+
+<script>
+  /* ── Search / Filter ── */
+  const TOTAL_BINDINGS = document.querySelectorAll('.binding').length;
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  const searchCount = document.getElementById('search-count');
+  const noResults = document.getElementById('no-results');
+  const noResultsTerm = noResults.querySelector('.term');
+
+  function debounce(fn, delay) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  function highlightText(el, query) {
+    const text = el.textContent;
+    const lower = text.toLowerCase();
+    const idx = lower.indexOf(query);
+    if (idx === -1) return;
+    const before = text.slice(0, idx);
+    const match = text.slice(idx, idx + query.length);
+    const after = text.slice(idx + query.length);
+    el.innerHTML = `${before}<mark class="search-match">${match}</mark>${after}`;
+  }
+
+  function stripHighlight(el) {
+    if (el.querySelector('mark')) {
+      el.textContent = el.textContent;
+    }
+  }
+
+  function filterBindings(query) {
+    const q = query.toLowerCase().trim();
+    let visibleTotal = 0;
+
+    if (!q) {
+      // Reset everything
+      document.querySelectorAll('.binding.hidden').forEach(el => el.classList.remove('hidden'));
+      document.querySelectorAll('.card.filtered-out').forEach(el => el.classList.remove('filtered-out'));
+      document.querySelectorAll('.group-label.hidden').forEach(el => el.classList.remove('hidden'));
+      document.querySelectorAll('.binding .key, .binding .desc').forEach(stripHighlight);
+      searchCount.textContent = '';
+      noResults.hidden = true;
+      searchClear.hidden = true;
+      return;
+    }
+
+    searchClear.hidden = false;
+
+    document.querySelectorAll('.card').forEach(card => {
+      let cardVisible = 0;
+
+      card.querySelectorAll('.binding').forEach(binding => {
+        const keyEl = binding.querySelector('.key');
+        const descEl = binding.querySelector('.desc');
+        const keyText = keyEl.textContent.toLowerCase();
+        const descText = descEl.textContent.toLowerCase();
+        const match = keyText.includes(q) || descText.includes(q);
+
+        if (match) {
+          binding.classList.remove('hidden');
+          cardVisible++;
+          visibleTotal++;
+          highlightText(keyEl, q);
+          highlightText(descEl, q);
+        } else {
+          binding.classList.add('hidden');
+        }
+      });
+
+      // Hide group labels with no visible bindings below
+      card.querySelectorAll('.group-label').forEach(label => {
+        let hasVisible = false;
+        let sibling = label.nextElementSibling;
+        while (sibling && !sibling.classList.contains('group-label')) {
+          if (sibling.classList.contains('binding') && !sibling.classList.contains('hidden')) {
+            hasVisible = true;
+            break;
+          }
+          sibling = sibling.nextElementSibling;
+        }
+        label.classList.toggle('hidden', !hasVisible);
+      });
+
+      card.classList.toggle('filtered-out', cardVisible === 0);
+    });
+
+    // Update UI
+    if (visibleTotal > 0) {
+      searchCount.textContent = `${visibleTotal} / ${TOTAL_BINDINGS}`;
+      noResults.hidden = true;
+    } else {
+      searchCount.textContent = '0 / ' + TOTAL_BINDINGS;
+      noResults.hidden = false;
+      noResultsTerm.textContent = `"${query}"`;
+    }
+  }
+
+  const debouncedFilter = debounce(filterBindings, 150);
+
+  searchInput.addEventListener('input', (e) => debouncedFilter(e.target.value));
+
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    filterBindings('');
+    searchInput.focus();
+  });
+
+  /* ── Service Worker Registration ── */
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('SW registered'))
+      .catch(() => console.log('SW registration failed'));
+  }
+
+  /* ── Inline Nomenclature (abbr) ── */
+  function addNomenclature() {
+    const map = {
+      'M-': 'Alt',
+      'C-': 'Ctrl',
+      'S-': 'Shift',
+      'PREFIX': 'Ctrl+b',
+    };
+
+    document.querySelectorAll('.binding .key').forEach(el => {
+      let html = el.innerHTML;
+      // Sort by length desc to avoid overlapping replacements
+      const sorted = Object.entries(map).sort((a, b) => b[0].length - a[0].length);
+      for (const [abbr, full] of sorted) {
+        // Replace only if not already wrapped in an abbr
+        const regex = new RegExp(`(?<!<abbr[^>]*>)${abbr}(?![^<]*</abbr>)`, 'g');
+        html = html.replace(regex, `<abbr title="${full}">${abbr}</abbr>`);
+      }
+      el.innerHTML = html;
+    });
+  }
+  /* ── Prefix Toggle ── */
+  function initPrefixToggle() {
+    const btnShort = document.getElementById('prefix-short');
+    const btnFull = document.getElementById('prefix-full');
+
+    // Insert PREFIX spans into page 1 keys
+    document.querySelectorAll('#page-prefix .binding .key').forEach(key => {
+      const prefix = document.createElement('span');
+      prefix.className = 'key-prefix';
+      prefix.textContent = '[Ctrl + b] + ';
+      key.insertBefore(prefix, key.firstChild);
+    });
+
+    function setMode(showFull) {
+      document.body.classList.toggle('show-full-prefix', showFull);
+      btnShort.classList.toggle('active', !showFull);
+      btnFull.classList.toggle('active', showFull);
+      localStorage.setItem('tmuxPrefixMode', showFull ? 'full' : 'short');
+    }
+
+    btnShort.addEventListener('click', () => setMode(false));
+    btnFull.addEventListener('click', () => setMode(true));
+
+    // Restore preference
+    const saved = localStorage.getItem('tmuxPrefixMode');
+    if (saved === 'full') setMode(true);
+  }
+  try {
+    addNomenclature();
+  } catch (e) {
+    console.warn('addNomenclature error:', e);
+  }
+
+  try {
+    initPrefixToggle();
+  } catch (e) {
+    console.warn('initPrefixToggle error:', e);
+  }
+
+  /* ── Tool Selector ── */
+  function initToolSelector() {
+    const nav = document.querySelector('.tool-selector');
+    const buttons = nav.querySelectorAll('button[data-tool]');
+    const sections = document.querySelectorAll('.tool-section[data-tool]');
+    const prefixToggle = document.querySelector('.prefix-toggle');
+
+    function setTool(toolName) {
+      // Toggle buttons
+      buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tool === toolName);
+      });
+
+      // Toggle sections
+      sections.forEach(section => {
+        const isMatch = section.dataset.tool === toolName;
+        section.hidden = !isMatch;
+      });
+
+      // Show/hide prefix toggle only for tmux
+      if (prefixToggle) {
+        prefixToggle.style.display = toolName === 'tmux' ? '' : 'none';
+      }
+
+      // Reset search when switching tools
+      if (searchInput && searchInput.value) {
+        searchInput.value = '';
+        filterBindings('');
+      }
+
+      localStorage.setItem('tmuxTool', toolName);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!btn.disabled) setTool(btn.dataset.tool);
+      });
+    });
+
+    // Restore preference
+    const saved = localStorage.getItem('tmuxTool');
+    if (saved && document.querySelector(`.tool-section[data-tool="${saved}"]`)) {
+      setTool(saved);
+    }
+  }
+
+  try {
+    initToolSelector();
+  } catch (e) {
+    console.warn('initToolSelector error:', e);
+  }
+
+  /* ── Scroll to Top Button ── */
+  const scrollBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.add('visible');
+    } else {
+      scrollBtn.classList.remove('visible');
+    }
+  });
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
