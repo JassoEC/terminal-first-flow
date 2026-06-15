@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tmux-cheatsheet-v1';
+const CACHE_NAME = 'terminalfirst-v1';
 const urlsToCache = [
   './index.html',
   './manifest.json'
