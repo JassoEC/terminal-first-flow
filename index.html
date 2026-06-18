@@ -765,6 +765,7 @@
   <button data-tool="tmux" class="active" title="tmux default bindings">tmux</button>
   <button data-tool="vim" title="Vim default bindings">Vim</button>
   <button data-tool="nvim" title="NeoVim LSP, Telescope, Terminal">NeoVim</button>
+  <button data-tool="i3" title="i3 window manager default bindings">i3</button>
 </nav>
 <div id="no-results" hidden>
   Sin resultados para <span class="term"></span>
@@ -1651,6 +1652,132 @@
       <div class="binding"><span class="key">:Telescope git_commits</span><span class="desc">Commits git</span></div>
       <div class="binding"><span class="key">:Telescope git_status</span><span class="desc">Estado git</span></div>
       <div class="binding"><span class="key">:Telescope git_stash</span><span class="desc">Stash git</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 1</div>
+</div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 6 — i3: Default Bindings                                   -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="tool-section" data-tool="i3" hidden>
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>i3 Default Bindings</h1>
+  </div>
+  <div class="header-meta">
+    <span>$mod</span> = <span>Super</span> (o <span>Alt</span> según configuración)
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección i3:</strong> atajos por defecto del i3 window manager.
+  <span class="legend-sep">|</span>
+  <kbd>$mod</kbd> = <kbd>Super</kbd> (Mod4, tecla Windows) o <kbd>Alt</kbd> (Mod1)
+  <span class="legend-sep">|</span>
+  <kbd>← ↓ ↑ →</kbd> = flechas del cursor
+  <span class="legend-sep">|</span>
+  <kbd>h j k l ;</kbd> = izquierda, abajo, arriba, derecha, siguiente
+  <span class="legend-sep">|</span>
+  <kbd>S-</kbd> = <kbd>Shift</kbd>
+  <span class="legend-sep">|</span>
+  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. GESTIÓN DE VENTANAS ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Gestión de Ventanas</div>
+    <div class="card-body">
+      <div class="group-label">Abrir y cerrar</div>
+      <div class="binding essential"><span class="key">$mod Enter</span><span class="desc">Abrir terminal</span></div>
+      <div class="binding essential"><span class="key">$mod q</span><span class="desc">Cerrar ventana</span></div>
+      <div class="binding essential"><span class="key">$mod d</span><span class="desc">Lanzador de apps (dmenu/rofi)</span></div>
+
+      <div class="group-label">Estado</div>
+      <div class="binding essential"><span class="key">$mod f</span><span class="desc">Pantalla completa on/off</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. NAVEGACIÓN ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Navegación</div>
+    <div class="card-body">
+      <div class="group-label">Foco</div>
+      <div class="binding essential"><span class="key">$mod ←↓↑→</span><span class="desc">Mover foco</span></div>
+      <div class="binding essential"><span class="key">$mod h j k l ;</span><span class="desc">Mover foco (vim-keys)</span></div>
+      <div class="binding"><span class="key">$mod Space</span><span class="desc">Alternar foco flotante/anelado</span></div>
+      <div class="binding"><span class="key">$mod a</span><span class="desc">Foco al contenedor padre</span></div>
+
+      <div class="group-label">Workspaces</div>
+      <div class="binding essential"><span class="key">$mod 0 – 9</span><span class="desc">Ir al workspace N</span></div>
+      <div class="binding essential"><span class="key">$mod S-0 – S-9</span><span class="desc">Mover ventana al workspace N</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. MOVER Y REDIMENSIONAR ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Mover y Redimensionar</div>
+    <div class="card-body">
+      <div class="group-label">Mover</div>
+      <div class="binding essential"><span class="key">$mod S-←↓↑→</span><span class="desc">Mover ventana en dirección</span></div>
+      <div class="binding"><span class="key">$mod S-h j k l ;</span><span class="desc">Mover ventana (vim-keys)</span></div>
+
+      <div class="group-label">Resize</div>
+      <div class="binding essential"><span class="key">$mod r</span><span class="desc">Entrar a modo resize</span></div>
+      <div class="binding"><span class="key">←↓↑→ / h j k l ;</span><span class="desc">Redimensionar</span></div>
+      <div class="binding"><span class="key">Esc / Enter / $mod r</span><span class="desc">Salir de resize</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. LAYOUTS ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Layouts</div>
+    <div class="card-body">
+      <div class="group-label">Layouts</div>
+      <div class="binding essential"><span class="key">$mod e</span><span class="desc">Toggle split (default)</span></div>
+      <div class="binding"><span class="key">$mod s</span><span class="desc">Layout apilado (stacking)</span></div>
+      <div class="binding"><span class="key">$mod w</span><span class="desc">Layout con pestañas (tabbed)</span></div>
+
+      <div class="group-label">División</div>
+      <div class="binding"><span class="key">$mod h</span><span class="desc">Próxima división horizontal</span></div>
+      <div class="binding"><span class="key">$mod v</span><span class="desc">Próxima división vertical</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. FLOTANTES Y SCRATCHPAD ─── -->
+  <div class="card card-rose">
+    <div class="card-header">Flotantes y Scratchpad</div>
+    <div class="card-body">
+      <div class="group-label">Flotantes</div>
+      <div class="binding"><span class="key">$mod S-Space</span><span class="desc">Alternar flotante/anelado</span></div>
+      <div class="binding"><span class="key">$mod arrastrar</span><span class="desc">Mover ventana flotante</span></div>
+      <div class="binding"><span class="key">$mod clic der</span><span class="desc">Redimensionar flotante</span></div>
+
+      <div class="group-label">Scratchpad</div>
+      <div class="binding"><span class="key">$mod S-Enter</span><span class="desc">Mover al scratchpad</span></div>
+      <div class="binding essential"><span class="key">$mod -</span><span class="desc">Mostrar/ocultar scratchpad</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. SISTEMA ─── -->
+  <div class="card card-slate">
+    <div class="card-header">Sistema</div>
+    <div class="card-body">
+      <div class="binding essential"><span class="key">$mod S-c</span><span class="desc">Recargar config</span></div>
+      <div class="binding"><span class="key">$mod S-r</span><span class="desc">Reiniciar i3 in-place</span></div>
+      <div class="binding"><span class="key">$mod S-e</span><span class="desc">Salir de i3 (confirma)</span></div>
+      <div class="binding"><span class="key">$mod S-x</span><span class="desc">Bloquear pantalla (i3lock)</span></div>
     </div>
   </div>
 
