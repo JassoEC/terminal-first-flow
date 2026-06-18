@@ -1675,12 +1675,16 @@
     <h1>i3 Default Bindings</h1>
   </div>
   <div class="header-meta">
-    <span>$mod</span> = <span>Super</span> (o <span>Alt</span> según configuración)
+    <span>$mod</span> = <span>Super</span> (o <span>Alt</span> según configuración) &nbsp; ✅ default &nbsp; 🔧 custom
   </div>
 </div>
 
 <div class="page-legend">
-  <strong>Sección i3:</strong> atajos por defecto del i3 window manager.
+  <strong>Sección i3:</strong> atajos del i3 window manager.
+  <span class="legend-sep">|</span>
+  ✅ = default de i3 (sin cambios)
+  <span class="legend-sep">|</span>
+  🔧 = personalizado — no viene por defecto o fue modificado
   <span class="legend-sep">|</span>
   <kbd>$mod</kbd> = <kbd>Super</kbd> (Mod4, tecla Windows) o <kbd>Alt</kbd> (Mod1)
   <span class="legend-sep">|</span>
@@ -1701,7 +1705,7 @@
     <div class="card-body">
       <div class="group-label">Abrir y cerrar</div>
       <div class="binding essential"><span class="key">$mod Enter</span><span class="desc">Abrir terminal</span></div>
-      <div class="binding essential"><span class="key">$mod q</span><span class="desc">Cerrar ventana</span></div>
+      <div class="binding essential"><span class="key">$mod S-q</span><span class="desc">Cerrar ventana</span></div>
       <div class="binding essential"><span class="key">$mod d</span><span class="desc">Lanzador de apps (dmenu/rofi)</span></div>
 
       <div class="group-label">Estado</div>
@@ -1715,13 +1719,14 @@
     <div class="card-body">
       <div class="group-label">Foco</div>
       <div class="binding essential"><span class="key">$mod ←↓↑→</span><span class="desc">Mover foco</span></div>
-      <div class="binding essential"><span class="key">$mod h j k l ;</span><span class="desc">Mover foco (vim-keys)</span></div>
-      <div class="binding"><span class="key">$mod Space</span><span class="desc">Alternar foco flotante/anelado</span></div>
+      <div class="binding essential"><span class="key">$mod j k l ;</span><span class="desc">Mover foco (vim-keys)</span></div>
+      <div class="binding essential"><span class="key">$mod Space</span><span class="desc">Alternar foco flotante/anelado</span></div>
       <div class="binding"><span class="key">$mod a</span><span class="desc">Foco al contenedor padre</span></div>
 
       <div class="group-label">Workspaces</div>
       <div class="binding essential"><span class="key">$mod 0 – 9</span><span class="desc">Ir al workspace N</span></div>
       <div class="binding essential"><span class="key">$mod S-0 – S-9</span><span class="desc">Mover ventana al workspace N</span></div>
+      <div class="binding"><span class="key">$mod Tab 🔧</span><span class="desc">Alternar al último workspace</span></div>
     </div>
   </div>
 
@@ -1731,7 +1736,7 @@
     <div class="card-body">
       <div class="group-label">Mover</div>
       <div class="binding essential"><span class="key">$mod S-←↓↑→</span><span class="desc">Mover ventana en dirección</span></div>
-      <div class="binding"><span class="key">$mod S-h j k l ;</span><span class="desc">Mover ventana (vim-keys)</span></div>
+      <div class="binding"><span class="key">$mod S-j k l ;</span><span class="desc">Mover ventana (vim-keys)</span></div>
 
       <div class="group-label">Resize</div>
       <div class="binding essential"><span class="key">$mod r</span><span class="desc">Entrar a modo resize</span></div>
@@ -1765,7 +1770,7 @@
       <div class="binding"><span class="key">$mod clic der</span><span class="desc">Redimensionar flotante</span></div>
 
       <div class="group-label">Scratchpad</div>
-      <div class="binding"><span class="key">$mod S-Enter</span><span class="desc">Mover al scratchpad</span></div>
+      <div class="binding"><span class="key">$mod S--</span><span class="desc">Mover al scratchpad</span></div>
       <div class="binding essential"><span class="key">$mod -</span><span class="desc">Mostrar/ocultar scratchpad</span></div>
     </div>
   </div>
@@ -1777,7 +1782,7 @@
       <div class="binding essential"><span class="key">$mod S-c</span><span class="desc">Recargar config</span></div>
       <div class="binding"><span class="key">$mod S-r</span><span class="desc">Reiniciar i3 in-place</span></div>
       <div class="binding"><span class="key">$mod S-e</span><span class="desc">Salir de i3 (confirma)</span></div>
-      <div class="binding"><span class="key">$mod S-x</span><span class="desc">Bloquear pantalla (i3lock)</span></div>
+      <div class="binding"><span class="key">$mod S-x 🔧</span><span class="desc">Bloquear pantalla (custom)</span></div>
     </div>
   </div>
 
