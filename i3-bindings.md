@@ -3,7 +3,9 @@
 > Modificador por defecto: **`$mod`** = Super (Windows) o `Alt`
 > Depende de la distribución: `Mod4` = Super, `Mod1` = Alt
 > Convención: `S-` = Shift, `C-` = Ctrl
-> `$mod` + flecha también funciona con `h` `j` `k` `l` `;` (vim-keys)
+> `$mod` + flecha también funciona con `j` `k` `l` `;` (vim-keys)
+> ✅ = Binding default de i3 (sin cambios)
+> 🔧 = Personalizado — no viene por defecto o fue modificado
 
 ---
 
@@ -11,10 +13,10 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod Enter` | `exec terminal` | Abre una terminal (por defecto: i3-sensible-terminal) |
-| `$mod q` | `kill` | Cierra la ventana enfocada |
-| `$mod d` | `exec dmenu_run` | Lanzador de aplicaciones (dmenu / rofi) |
-| `$mod f` | `fullscreen toggle` | Alterna pantalla completa |
+| `$mod Enter` 🔧 | `exec ghostty` | Abre la terminal (personalizado: ghostty) |
+| `$mod Shift+q` ✅ | `kill` | Cierra la ventana enfocada |
+| `$mod d` 🔧 | `exec rofi -show drun` | Lanzador de aplicaciones (personalizado: rofi) |
+| `$mod f` ✅ | `fullscreen toggle` | Alterna pantalla completa |
 
 ---
 
@@ -22,11 +24,13 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod ←↓↑→` / `$mod h j k l ;` | `focus` | Mover foco en la dirección indicada |
-| `$mod Space` | `focus toggle` | Alterna foco entre ventanas flotantes y aneladas |
-| `$mod a` | `focus parent` | Foco al contenedor padre |
-| `$mod 0` … `$mod 9` | `workspace N` | Cambia al workspace con número N |
-| `$mod Shift+0` … `$mod Shift+9` | `move container to workspace N` | Mueve la ventana al workspace N |
+| `$mod ←↓↑→` ✅ | `focus` | Mover foco con flechas |
+| `$mod j k l ;` ✅ | `focus` | Mover foco con vim-keys (←↓↑→) |
+| `$mod Space` ✅ | `focus mode_toggle` | Alterna foco entre flotante y anelado |
+| `$mod a` ✅ | `focus parent` | Foco al contenedor padre |
+| `$mod 0` … `$mod 9` ✅ | `workspace N` | Cambia al workspace con número N |
+| `$mod Shift+0` … `$mod Shift+9` ✅ | `move container to workspace N` | Mueve la ventana al workspace N |
+| `$mod Tab` 🔧 | `workspace back_and_forth` | Alterna al último workspace visitado |
 
 ---
 
@@ -34,11 +38,12 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod Shift+←↓↑→` / `$mod Shift+h j k l ;` | `move` | Mueve la ventana en la dirección indicada |
-| `$mod r` | `mode resize` | Entra en modo redimensionar |
+| `$mod Shift+←↓↑→` ✅ | `move` | Mueve la ventana en la dirección indicada |
+| `$mod Shift+j k l ;` ✅ | `move` | Mueve la ventana con vim-keys (←↓↑→) |
+| `$mod r` ✅ | `mode resize` | Entra en modo redimensionar |
 | (en resize) `←↓↑→` / `h j k l ;` | `resize grow/shrink` | Redimensiona en esa dirección |
 | (en resize) `Esc` / `Enter` / `$mod r` | `mode default` | Sale del modo resize |
-| `$mod Shift+f` | — | Alterna no-pantalla completa (ventana flotante) |
+
 
 ---
 
@@ -46,11 +51,11 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod e` | `layout toggle split` | Alterna entre orientaciones (split h/v) |
-| `$mod s` | `layout stacking` | Apila las ventanas verticalmente |
-| `$mod w` | `layout tabbed` | Muestra ventanas como pestañas |
-| `$mod h` | `split h` | La próxima división será horizontal |
-| `$mod v` | `split v` | La próxima división será vertical |
+| `$mod e` ✅ | `layout toggle split` | Alterna entre orientaciones (split h/v) |
+| `$mod s` ✅ | `layout stacking` | Apila las ventanas verticalmente |
+| `$mod w` ✅ | `layout tabbed` | Muestra ventanas como pestañas |
+| `$mod h` ✅ | `split h` | La próxima división será horizontal |
+| `$mod v` ✅ | `split v` | La próxima división será vertical |
 
 ---
 
@@ -58,11 +63,11 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod Shift+Space` | `floating toggle` | Alterna la ventana entre anelada y flotante |
-| `$mod arrastrar` | — | Mueve ventana flotante (clic izquierdo + arrastrar) |
-| `$mod clic derecho` | — | Redimensiona ventana flotante (clic en esquina) |
-| `$mod Shift+Enter` | `move —to-scratchpad` | Mueve la ventana al scratchpad |
-| `$mod minus` | `scratchpad show` | Muestra/oculta el scratchpad |
+| `$mod Shift+Space` ✅ | `floating toggle` | Alterna la ventana entre anelada y flotante |
+| `$mod arrastrar` ✅ | — | Mueve ventana flotante ($mod + clic izquierdo) |
+| `$mod clic der` ✅ | — | Redimensiona ventana flotante ($mod + clic derecho) |
+| `$mod Shift+-` ✅ | `move scratchpad` | Mueve la ventana al scratchpad |
+| `$mod -` ✅ | `scratchpad show` | Muestra/oculta el scratchpad |
 
 ---
 
@@ -70,10 +75,10 @@
 
 | Atajo | Acción | Descripción |
 |-------|--------|-------------|
-| `$mod Shift+c` | `reload` | Recarga el archivo de configuración |
-| `$mod Shift+r` | `restart` | Reinicia i3 en su lugar (sin cerrar apps) |
-| `$mod Shift+e` | `exit` | Sale de i3 (pide confirmación) |
-| `$mod Shift+x` | `exec i3lock` | Bloquea la pantalla (si i3lock está instalado) |
+| `$mod Shift+c` ✅ | `reload` | Recarga el archivo de configuración |
+| `$mod Shift+r` ✅ | `restart` | Reinicia i3 en su lugar (sin cerrar apps) |
+| `$mod Shift+e` ✅ | `exit` | Sale de i3 (pide confirmación) |
+| `$mod Shift+x` 🔧 | `exec i3lock --nofork` | Bloquea la pantalla (personalizado) |
 
 ---
 
@@ -115,8 +120,11 @@
 
 | Símbolo | Significado |
 |---------|-------------|
+| `✅` | Binding default de i3 — funciona sin cambios |
+| `🔧` | Binding personalizado — no viene por defecto en i3 |
 | `$mod` | Modificador principal (Super o Alt según configuración) |
 | `←↓↑→` | Flechas del cursor |
-| `h j k l ;` | Vim-keys (h=izquierda, j=abajo, k=arriba, l=derecha, ;=siguiente) |
+| `j k l ;` | Vim-keys (j=izquierda, k=abajo, l=arriba, ;=derecha) |
 | `S-` | Shift |
 | `C-` | Ctrl |
+
