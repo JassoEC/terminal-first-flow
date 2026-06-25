@@ -1,7 +1,10 @@
 const CACHE_NAME = 'terminalfirst-v1';
 const urlsToCache = [
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
