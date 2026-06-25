@@ -30,7 +30,24 @@ const manifestDst = path.join(OUT, 'manifest.json');
 fs.writeFileSync(manifestDst, JSON.stringify(manifest, null, 2) + '\n');
 console.log(`  → ${manifestDst}`);
 
-// 3. Copy sw.js, adjusting cache URL
+// 3. Copy icon assets
+const iconFiles = [
+  'icon-192.png',
+  'icon-512.png',
+  'apple-touch-icon.png',
+  'favicon.ico',
+  'favicon-16x16.png',
+  'favicon-32x32.png'
+];
+for (const f of iconFiles) {
+  const src = path.join(SRC, f);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, path.join(OUT, f));
+    console.log(`  → ${OUT}/${f}`);
+  }
+}
+
+// 4. Copy sw.js, adjusting cache URL
 const swSrc = path.join(SRC, 'sw.js');
 let sw = fs.readFileSync(swSrc, 'utf-8');
 sw = sw.replace(
