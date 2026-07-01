@@ -745,8 +745,110 @@
     }
     .page-label {
       font-size: 7pt !important;
-    }
-    #scroll-top { display: none !important; }
+  }
+  #scroll-top { display: none !important; }
+}
+
+  /* ════════════════════════════════════════════
+     COLLAPSIBLE EXTRAS (Troubleshooting, Quick Start, Conceptos)
+  ════════════════════════════════════════════ */
+  details.extras {
+    margin-top: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    overflow: hidden;
+  }
+  details.extras summary {
+    padding: 0.6rem 0.75rem;
+    font-size: var(--body-size);
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    background: var(--bg-header);
+    color: var(--text-secondary);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  details.extras summary::-webkit-details-marker { display: none; }
+  details.extras summary::before {
+    content: "\25B6";
+    font-size: 0.7em;
+    transition: transform 0.2s;
+  }
+  details.extras[open] summary::before {
+    content: "\25B6";
+    transform: rotate(90deg);
+  }
+  details.extras .inner {
+    padding: 0.75rem;
+    font-size: var(--small-size);
+    line-height: 1.6;
+  }
+  details.extras table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--small-size);
+    margin: 0.5rem 0;
+  }
+  details.extras th,
+  details.extras td {
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+  details.extras th {
+    background: var(--bg-header);
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+  details.extras td {
+    color: var(--text-secondary);
+  }
+  details.extras kbd {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--small-size);
+    background: var(--bg-header);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+  details.extras pre {
+    font-family: var(--font-mono);
+    font-size: var(--small-size);
+    background: var(--bg-header);
+    padding: 0.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+  }
+  details.extras ul {
+    margin: 0.5rem 0;
+    padding-left: 1.25rem;
+  }
+  details.extras li {
+    margin-bottom: 0.3rem;
+  }
+  details.extras p {
+    margin: 0.5rem 0;
+  }
+  details.extras code {
+    font-family: var(--font-mono);
+    font-size: var(--small-size);
+    background: var(--bg-header);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+  .troubleshooting-row td:first-child {
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--text-main);
   }
 </style>
 </head>
@@ -768,7 +870,7 @@
   <button data-tool="tmux" class="active" title="tmux default bindings">tmux</button>
   <button data-tool="vim" title="Vim default bindings">Vim</button>
   <button data-tool="nvim" title="NeoVim LSP, Telescope, Terminal">NeoVim</button>
-  <button data-tool="i3" title="i3 window manager default bindings">i3</button>
+
 </nav>
 <div id="no-results" hidden>
   Sin resultados para <span class="term"></span>
@@ -783,6 +885,31 @@
 <!-- ════════════════════════════════════════════════════════════════ -->
 
 <div class="tool-section" data-tool="tmux">
+
+<!-- ── QUICK START ── -->
+<details class="extras" open>
+  <summary>🚀 Quick Start — primeros pasos</summary>
+  <div class="inner">
+    <p><strong>Primeros comandos CLI:</strong></p>
+    <pre>tmux                    # nueva sesión anónima
+tmux new -s nombre      # nueva sesión con nombre
+tmux ls                 # listar sesiones activas
+tmux attach -t nombre   # reenganchar a sesión
+tmux kill-session -t n  # matar sesión</pre>
+    <table>
+      <tr><th>Atajo</th><th>Por qué lo necesitas</th></tr>
+      <tr><td><kbd>PREFIX c</kbd></td><td>Cada tarea distinta = ventana nueva</td></tr>
+      <tr><td><kbd>PREFIX n / p</kbd></td><td>Alternar entre tareas abiertas</td></tr>
+      <tr><td><kbd>PREFIX " / %</kbd></td><td>Ver 2 cosas simultáneamente</td></tr>
+      <tr><td><kbd>PREFIX z</kbd></td><td>Enfocarte en un solo panel temporalmente</td></tr>
+      <tr><td><kbd>PREFIX [</kbd></td><td>Scrollear historial y copiar texto</td></tr>
+      <tr><td><kbd>PREFIX ]</kbd></td><td>Insertar lo que copiaste</td></tr>
+      <tr><td><kbd>PREFIX d</kbd></td><td>Salir sin matar nada (la sesión sigue)</td></tr>
+      <tr><td><kbd>PREFIX ?</kbd></td><td>Cuando olvidas un atajo</td></tr>
+    </table>
+  </div>
+</details>
+
 <div class="page" id="page-prefix">
 
 <div class="page-header">
@@ -952,6 +1079,22 @@
 
 </div>
 
+<div class="workflow-box">
+  <h2>Workflow — Dividir en 3 paneles y organizar</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">PREFIX "</span><span class="l">split horiz.</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">PREFIX %</span><span class="l">split vert.</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">PREFIX z</span><span class="l">zoom panel</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">PREFIX M-5</span><span class="l">layout tiled</span></div>
+  </div>
+  <div>
+    <span class="wf-example">PREFIX " → PREFIX % → <span class="hl">tres paneles</span> listos</span>
+  </div>
+</div>
+
 <div class="page-label">1 / 2 — Página siguiente: copy-mode (Emacs)</div>
 </div>
 
@@ -1001,7 +1144,13 @@
       <div class="binding"><span class="key">C-e / End</span><span class="desc">Fin de línea</span></div>
       <div class="binding"><span class="key">M-b</span><span class="desc">Palabra atrás</span></div>
       <div class="binding"><span class="key">M-f</span><span class="desc">Palabra adelante</span></div>
+    </div>
+  </div>
 
+  <!-- ─── PANTALLA E HISTORIAL ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Pantalla e Historial</div>
+    <div class="card-body">
       <div class="group-label">Página y pantalla</div>
       <div class="binding"><span class="key">C-v / Space / PgDn</span><span class="desc">Página abajo</span></div>
       <div class="binding"><span class="key">M-v / PgUp</span><span class="desc">Página arriba</span></div>
@@ -1027,6 +1176,10 @@
       <div class="binding"><span class="key">R</span><span class="desc">Modo rectangular (toggle)</span></div>
       <div class="binding"><span class="key">X</span><span class="desc">Marcar posición</span></div>
       <div class="binding"><span class="key">M-x</span><span class="desc">Ir a marca</span></div>
+      <div class="binding"><span class="key">Arrastrar</span><span class="desc">Seleccionar y copiar (mouse)</span></div>
+      <div class="binding"><span class="key">Doble click</span><span class="desc">Seleccionar palabra (mouse)</span></div>
+      <div class="binding"><span class="key">Triple click</span><span class="desc">Seleccionar línea (mouse)</span></div>
+      <div class="binding"><span class="key">Scroll</span><span class="desc">Navegar historial (mouse)</span></div>
 
       <div class="group-label">Copiar y salir</div>
       <div class="binding essential"><span class="key">C-w</span><span class="desc">Copiar selección</span></div>
@@ -1036,12 +1189,6 @@
       <div class="group-label">Salir sin copiar</div>
       <div class="binding essential"><span class="key">Escape / q</span><span class="desc">Cancelar y salir</span></div>
       <div class="binding"><span class="key">C-c</span><span class="desc">Cancelar y salir</span></div>
-
-      <div class="group-label">Ratón (mouse)</div>
-      <div class="binding"><span class="key">Arrastrar</span><span class="desc">Seleccionar y copiar</span></div>
-      <div class="binding"><span class="key">Doble click</span><span class="desc">Seleccionar palabra</span></div>
-      <div class="binding"><span class="key">Triple click</span><span class="desc">Seleccionar línea</span></div>
-      <div class="binding"><span class="key">Scroll</span><span class="desc">Navegar historial</span></div>
     </div>
   </div>
 
@@ -1112,9 +1259,138 @@
 
 <div class="page-label">2 / 2</div>
 </div>
+
+<!-- ── EXTRAS: Troubleshooting + Conceptos (tmux) ── -->
+<details class="extras">
+  <summary>🔧 Troubleshooting — problemas comunes</summary>
+  <div class="inner">
+    <table>
+      <tr><th>Problema</th><th>Síntoma</th><th>Solución</th></tr>
+      <tr class="troubleshooting-row"><td>No puedo scrollear</td><td>El scroll no funciona</td><td><kbd>PREFIX [</kbd> entra a copy-mode. Ahí sí puedes scrollear con flechas/PgUp/PgDn</td></tr>
+      <tr class="troubleshooting-row"><td>No puedo copiar con mouse</td><td>Click arrastra bordes en vez de seleccionar</td><td>Esto es normal en tmux. Usa <kbd>PREFIX [</kbd> → <kbd>C-Space</kbd> → mover → <kbd>C-w</kbd></td></tr>
+      <tr class="troubleshooting-row"><td>Clipboard no sincroniza</td><td><kbd>PREFIX ]</kbd> pega cosas viejas</td><td>tmux tiene su propio buffer. Usa <kbd>PREFIX =</kbd> para elegir buffer, o <kbd>PREFIX #</kbd> para ver qué hay</td></tr>
+      <tr class="troubleshooting-row"><td>Perdí la sesión</td><td><kbd>tmux attach</kbd> dice &ldquo;no sessions&rdquo;</td><td><kbd>tmux ls</kbd> para ver el nombre exacto. Luego <kbd>tmux attach -t nombre</kbd></td></tr>
+      <tr class="troubleshooting-row"><td>No puedo redimensionar</td><td>Flechas sin prefijo no funcionan</td><td>Necesitas <kbd>PREFIX</kbd> + flechas. <kbd>C-↑/↓/←/→</kbd> para ±1, <kbd>M-↑/↓/←/→</kbd> para ±5</td></tr>
+      <tr class="troubleshooting-row"><td>Se cerró todo al cerrar terminal</td><td>tmux murió al salir</td><td>Necesitas <kbd>PREFIX d</kbd> (detach) antes de cerrar la terminal. Así la sesión sobrevive</td></tr>
+      <tr class="troubleshooting-row"><td>No sé en qué ventana estoy</td><td>Confusión con múltiples ventanas</td><td>La barra de estado abajo muestra <kbd>0:bash* 1:vim- 2:node</kbd>. El <kbd>*</kbd> es la activa</td></tr>
+      <tr class="troubleshooting-row"><td>Olvidé el nombre de la sesión</td><td><kbd>tmux ls</kbd> no la muestra</td><td><kbd>tmux ls</kbd> lista todas. Si no aparece, no existe — crea una nueva con <kbd>tmux new -s nombre</kbd></td></tr>
+    </table>
+  </div>
+</details>
+
+<details class="extras">
+  <summary>🧠 Conceptos — Sesión / Ventana / Panel</summary>
+  <div class="inner">
+    <p>tmux organiza tu trabajo en tres niveles jerárquicos:</p>
+    <pre>Sesión (session) — tu &ldquo;proyecto&rdquo; o contexto
+├── Ventana 0 (window) — una &ldquo;pestaña&rdquo;
+│   ├── Panel 0 (pane) — división de la ventana
+│   └── Panel 1 (pane) — otra división
+├── Ventana 1 (window)
+│   └── Panel 0 (pane)
+└── Ventana 2 (window)
+    ├── Panel 0
+    ├── Panel 1
+    └── Panel 2</pre>
+    <table>
+      <tr><th>Nivel</th><th>Analogía</th><th>Persistencia</th><th>Comandos clave</th></tr>
+      <tr><td><strong>Sesión</strong></td><td>Tu escritorio completo</td><td>✅ Sobrevive al cerrar terminal</td><td><kbd>tmux new -s X</kbd>, <kbd>tmux attach -t X</kbd>, <kbd>PREFIX d</kbd></td></tr>
+      <tr><td><strong>Ventana</strong></td><td>Una pestaña del navegador</td><td>✅ Dentro de la sesión</td><td><kbd>PREFIX c</kbd>, <kbd>PREFIX n/p</kbd>, <kbd>PREFIX 0–9</kbd></td></tr>
+      <tr><td><strong>Panel</strong></td><td>Un split de la pantalla</td><td>✅ Dentro de la ventana</td><td><kbd>PREFIX "</kbd>, <kbd>PREFIX %</kbd>, <kbd>PREFIX z</kbd>, <kbd>PREFIX o</kbd></td></tr>
+    </table>
+    <p><strong>Regla mnemotécnica:</strong></p>
+    <ul>
+      <li>Creas una <strong>sesión</strong> por proyecto (ej: <code>frontend</code>, <code>backend</code>, <code>infra</code>)</li>
+      <li>Creas una <strong>ventana</strong> por tarea dentro del proyecto (ej: <code>editor</code>, <code>terminal</code>, <code>logs</code>)</li>
+      <li>Divides en <strong>paneles</strong> cuando necesitas ver 2+ cosas a la vez (ej: <code>editor</code> + <code>tests</code>)</li>
+    </ul>
+  </div>
+</details>
+
+<!-- ── EXTRAS: Menús Contextuales (tmux) ── -->
+<details class="extras">
+  <summary>📋 Menús Contextuales — PREFIX &lt; (ventana) y PREFIX &gt; (panel)</summary>
+  <div class="inner">
+    <p><strong>PREFIX &lt;</strong> — Menú de ventana:</p>
+    <table>
+      <tr><th>Tecla</th><th>Acción</th></tr>
+      <tr><td><kbd>l</kbd></td><td>Swap Left — mover ventana a la izquierda</td></tr>
+      <tr><td><kbd>r</kbd></td><td>Swap Right — mover ventana a la derecha</td></tr>
+      <tr><td><kbd>s</kbd></td><td>Swap Marked — intercambiar con ventana marcada</td></tr>
+      <tr><td><kbd>X</kbd></td><td>Kill Window — matar ventana</td></tr>
+      <tr><td><kbd>R</kbd></td><td>Respawn — reiniciar ventana</td></tr>
+      <tr><td><kbd>m</kbd></td><td>Mark/Unmark — marcar panel</td></tr>
+      <tr><td><kbd>n</kbd></td><td>Rename — renombrar ventana</td></tr>
+      <tr><td><kbd>w</kbd></td><td>New After — nueva ventana después</td></tr>
+      <tr><td><kbd>W</kbd></td><td>New At End — nueva ventana al final</td></tr>
+    </table>
+
+    <p><strong>PREFIX &gt;</strong> — Menú de panel:</p>
+    <table>
+      <tr><th>Tecla</th><th>Acción</th></tr>
+      <tr><td><kbd>h</kbd></td><td>Horizontal Split — dividir horizontal</td></tr>
+      <tr><td><kbd>v</kbd></td><td>Vertical Split — dividir vertical</td></tr>
+      <tr><td><kbd>u</kbd></td><td>Swap Up — intercambiar con panel superior</td></tr>
+      <tr><td><kbd>d</kbd></td><td>Swap Down — intercambiar con panel inferior</td></tr>
+      <tr><td><kbd>s</kbd></td><td>Swap Marked — intercambiar con panel marcado</td></tr>
+      <tr><td><kbd>X</kbd></td><td>Kill Pane — matar panel</td></tr>
+      <tr><td><kbd>m</kbd></td><td>Mark/Unmark — marcar panel</td></tr>
+      <tr><td><kbd>z</kbd></td><td>Zoom/Unzoom — maximizar/restaurar</td></tr>
+      <tr><td><kbd>&lt;</kbd></td><td>Go To Top — ir al inicio del historial</td></tr>
+      <tr><td><kbd>&gt;</kbd></td><td>Go To Bottom — ir al final del historial</td></tr>
+      <tr><td><kbd>C-r</kbd></td><td>Search Word — buscar palabra hacia atrás</td></tr>
+      <tr><td><kbd>c</kbd></td><td>Copy Word — copiar palabra al buffer</td></tr>
+      <tr><td><kbd>l</kbd></td><td>Copy Line — copiar línea al buffer</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ── EXTRAS: Workflows Rápidos (tmux) ── -->
+<details class="extras">
+  <summary>⚡ Workflows Rápidos — ejemplos paso a paso</summary>
+  <div class="inner">
+    <p><strong>Buscar un error y copiar la línea:</strong></p>
+    <pre>PREFIX [         →  entrar a copy-mode
+C-r              →  iniciar búsqueda hacia arriba
+error            →  escribir el texto a buscar
+Enter            →  confirmar búsqueda
+n / N            →  navegar entre coincidencias
+C-a              →  ir al inicio de la línea
+C-Space          →  iniciar selección
+C-e              →  ir al final de la línea
+C-w              →  copiar y salir</pre>
+
+    <p><strong>Dividir en 3 paneles y organizar:</strong></p>
+    <pre>PREFIX "         →  split horizontal (2 paneles)
+PREFIX %         →  split vertical del panel activo (3 paneles)
+PREFIX M-5       →  layout tiled (mosaico)
+PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
+  </div>
+</details>
+
 </div>
 
 <div class="tool-section" data-tool="vim" hidden>
+
+<!-- ── QUICK START ── -->
+<details class="extras" open>
+  <summary>🚀 Quick Start — primeros pasos</summary>
+  <div class="inner">
+    <table>
+      <tr><th>Atajo</th><th>Por qué</th></tr>
+      <tr><td><kbd>i</kbd></td><td>Empezar a escribir</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Volver a Normal</td></tr>
+      <tr><td><kbd>:w</kbd></td><td>Guardar</td></tr>
+      <tr><td><kbd>:q</kbd></td><td>Salir</td></tr>
+      <tr><td><kbd>h j k l</kbd></td><td>Moverse sin flechas</td></tr>
+      <tr><td><kbd>dd / yy</kbd></td><td>Borrar / Copiar línea</td></tr>
+      <tr><td><kbd>p</kbd></td><td>Pegar</td></tr>
+      <tr><td><kbd>u</kbd></td><td>Deshacer</td></tr>
+      <tr><td><kbd>/texto</kbd></td><td>Buscar</td></tr>
+      <tr><td><kbd>:help</kbd></td><td>Ayuda</td></tr>
+    </table>
+  </div>
+</details>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!--  PAGE 3 — Vim Default Bindings: Movimiento y Edición            -->
@@ -1167,7 +1443,13 @@
       <div class="binding"><span class="key">t&lt;char&gt; / T&lt;char&gt;</span><span class="desc">Hasta justo antes / después</span></div>
       <div class="binding"><span class="key">; / ,</span><span class="desc">Repetir jump / dirección opuesta</span></div>
       <div class="binding"><span class="key">%</span><span class="desc">Paréntesis/llave/corchete correspondiente</span></div>
+    </div>
+  </div>
 
+  <!-- ─── 1b. PANTALLA Y BÚSQUEDA ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Pantalla y Búsqueda</div>
+    <div class="card-body">
       <div class="group-label">Pantalla</div>
       <div class="binding"><span class="key">C-u / C-d</span><span class="desc">Media página arriba / abajo</span></div>
       <div class="binding"><span class="key">zt / zz / zb</span><span class="desc">Cursor arriba / centro / abajo de pantalla</span></div>
@@ -1198,7 +1480,13 @@
       <div class="binding"><span class="key">D</span><span class="desc">Borrar desde cursor hasta fin de línea</span></div>
       <div class="binding"><span class="key">J</span><span class="desc">Unir siguiente línea</span></div>
       <div class="binding"><span class="key">gJ</span><span class="desc">Unir sin insertar espacio</span></div>
+    </div>
+  </div>
 
+  <!-- ─── 2b. COPIAR Y DESHACER ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Copiar y Deshacer</div>
+    <div class="card-body">
       <div class="group-label">Copiar y Pegar</div>
       <div class="binding essential"><span class="key">yy / Y</span><span class="desc">Copiar línea</span></div>
       <div class="binding"><span class="key">yw / y$</span><span class="desc">Copiar palabra / hasta fin de línea</span></div>
@@ -1303,6 +1591,24 @@
 
 </div>
 
+<div class="workflow-box">
+  <h2>Workflow — Navegar y editar en 3 pasos</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">/pattern</span><span class="l">buscar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">n / N</span><span class="l">navegar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">ciw</span><span class="l">cambiar palabra</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">Esc</span><span class="l">volver a Normal</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:w</span><span class="l">guardar</span></div>
+  </div>
+  <div>
+    <span class="wf-example">/foo → n → ciw → bar → Esc → :w &nbsp;→&nbsp; <span class="hl">"foo" reemplazado por "bar"</span></span>
+  </div>
+</div>
+
 <div class="page-label">1 / 2 — Página siguiente: Ventanas, Tabs, Ex Commands</div>
 </div>
 
@@ -1333,7 +1639,7 @@
 
 <div class="grid-4">
 
-  <!-- ─── 7. VENTANAS ─── -->
+  <!-- ─── 7. VENTANAS (SPLITS) ─── -->
   <div class="card card-blue">
     <div class="card-header">Ventanas (Splits)</div>
     <div class="card-body">
@@ -1347,7 +1653,13 @@
       <div class="binding"><span class="key">C-w w / W</span><span class="desc">Siguiente / Anterior ventana</span></div>
       <div class="binding"><span class="key">C-w p</span><span class="desc">Ventana anterior</span></div>
       <div class="binding"><span class="key">C-w t</span><span class="desc">Ir a ventana top-left</span></div>
+    </div>
+  </div>
 
+  <!-- ─── 7b. REDIMENSIONAR Y CERRAR ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Redimensionar y Cerrar</div>
+    <div class="card-body">
       <div class="group-label">Mover y Redimensionar</div>
       <div class="binding"><span class="key">C-w HJKL</span><span class="desc">Mover ventana a borde</span></div>
       <div class="binding"><span class="key">C-w r / R</span><span class="desc">Rotar ventanas</span></div>
@@ -1457,10 +1769,53 @@
 <div class="page-label">2 / 2</div>
 </div>
 
+<!-- ── EXTRAS: Troubleshooting + Conceptos + Notas (Vim) ── -->
+<details class="extras">
+  <summary>🔧 Troubleshooting — problemas comunes</summary>
+  <div class="inner">
+    <table>
+      <tr><th>Problema</th><th>Solución</th></tr>
+      <tr class="troubleshooting-row"><td>No sé en qué modo estoy</td><td>Mira abajo: <kbd>-- NORMAL --</kbd> / <kbd>-- INSERT --</kbd> / <kbd>-- VISUAL --</kbd></td></tr>
+      <tr class="troubleshooting-row"><td>No puedo escribir</td><td>Estás en Normal o Visual. Pulsa <kbd>i</kbd></td></tr>
+      <tr class="troubleshooting-row"><td>No puedo salir</td><td><kbd>:q!</kbd> (salir sin guardar), <kbd>:wq</kbd> (guardar y salir)</td></tr>
+      <tr class="troubleshooting-row"><td>Pegué texto mal formateado</td><td><kbd>:set paste</kbd>, pega, <kbd>:set nopaste</kbd></td></tr>
+      <tr class="troubleshooting-row"><td>La búsqueda resalta todo</td><td><kbd>:noh</kbd> para limpiar</td></tr>
+      <tr class="troubleshooting-row"><td>Cerré accidentalmente</td><td><kbd>:e#</kbd> para reabrir el último archivo</td></tr>
+      <tr class="troubleshooting-row"><td>Perdí cambios</td><td><kbd>u</kbd> (undo) o <kbd>C-r</kbd> (redo)</td></tr>
+    </table>
+  </div>
+</details>
+
+<details class="extras">
+  <summary>🧠 Conceptos — Modos de Vim</summary>
+  <div class="inner">
+    <table>
+      <tr><th>Modo</th><th>Cómo entrar</th><th>Cómo salir</th><th>Para qué</th></tr>
+      <tr><td><strong>Normal</strong></td><td>(default, <kbd>Esc</kbd>)</td><td>—</td><td>Navegar, borrar, buscar</td></tr>
+      <tr><td><strong>Insert</strong></td><td><kbd>i I a A o O</kbd></td><td><kbd>Esc</kbd></td><td>Escribir texto</td></tr>
+      <tr><td><strong>Visual</strong></td><td><kbd>v V C-v</kbd></td><td><kbd>Esc</kbd></td><td>Seleccionar texto</td></tr>
+      <tr><td><strong>Command</strong></td><td><kbd>: / ?</kbd></td><td><kbd>Esc</kbd></td><td>Ejecutar comandos</td></tr>
+      <tr><td><strong>Replace</strong></td><td><kbd>R</kbd></td><td><kbd>Esc</kbd></td><td>Sobreescribir texto</td></tr>
+    </table>
+  </div>
+</details>
+
+<details class="extras">
+  <summary>📝 Notas</summary>
+  <div class="inner">
+    <ul>
+      <li><kbd>&lt;leader&gt;</kbd> por defecto es <kbd>\</kbd> (backslash). Muchos setups lo remapean a <kbd>Space</kbd></li>
+      <li>Todos los bindings son <strong>defaults</strong> de Vim. No requieren configuración</li>
+      <li><kbd>C-w</kbd> en Ventanas = <kbd>Ctrl</kbd> + <kbd>w</kbd>. Es una combinación, no un prefijo como <kbd>PREFIX</kbd> en tmux</li>
+    </ul>
+  </div>
+</details>
+
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
-<!--  PAGE 5 — NeoVim: LSP, Telescope, Terminal                      -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 5 — NeoVim: LSP, Telescope, Terminal (1/2)                 -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 
 <div class="tool-section" data-tool="nvim" hidden>
@@ -1552,14 +1907,6 @@
       <div class="binding"><span class="key">C-q</span><span class="desc">Enviar selección a quickfix</span></div>
       <div class="binding"><span class="key">Esc / C-c</span><span class="desc">Cerrar</span></div>
       <div class="binding"><span class="key">?</span><span class="desc">Ayuda de keymaps</span></div>
-
-      <div class="group-label">Comandos :Telescope</div>
-      <div class="binding"><span class="key">:Telescope find_files</span><span class="desc">= &lt;leader&gt;ff</span></div>
-      <div class="binding"><span class="key">:Telescope live_grep</span><span class="desc">= &lt;leader&gt;fg</span></div>
-      <div class="binding"><span class="key">:Telescope lsp_references</span><span class="desc">= gr</span></div>
-      <div class="binding"><span class="key">:Telescope lsp_definitions</span><span class="desc">= gd</span></div>
-      <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
-      <div class="binding"><span class="key">:Telescope resume</span><span class="desc">Reanudar último picker</span></div>
     </div>
   </div>
 
@@ -1584,6 +1931,53 @@
       <div class="binding"><span class="key">&lt;C-w&gt;c</span><span class="desc">Cerrar terminal</span></div>
     </div>
   </div>
+
+</div>
+
+<div class="workflow-box">
+  <h2>Workflow — Go-to-definition con LSP</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">gd</span><span class="l">ir a definición</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-o</span><span class="l">volver atrás</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-i</span><span class="l">avanzar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">K</span><span class="l">hover doc</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">&lt;leader&gt;rn</span><span class="l">renombrar</span></div>
+  </div>
+</div>
+
+<div class="page-label">1 / 2 — Página siguiente: Built-in, Quickfix, Telescope Avanzado</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 6 — NeoVim Avanzado (2/2)                                  -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>NeoVim <small>Avanzado: Built-in, Quickfix, Telescope</small></h1>
+  </div>
+  <div class="header-meta">
+    🔌 = plugin requerido &nbsp; ■ = built-in NeoVim
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Sección NeoVim Avanzado:</strong> built-in diagnostics, quickfix, y comandos Telescope.
+  <span class="legend-sep">|</span>
+  🔌 = Requiere plugin (LSP: nvim-lspconfig, Telescope: telescope.nvim)
+  <span class="legend-sep">|</span>
+  ■ = Built-in de NeoVim (no requiere plugin)
+  <span class="legend-sep">|</span>
+  <kbd>&lt;leader&gt;</kbd> = <kbd>\</kbd> (por defecto, comúnmente <kbd>Space</kbd>)
+</div>
+
+<div class="grid-4">
 
   <!-- ─── 4. NEOVIM BUILT-IN ■ ─── -->
   <div class="card card-violet">
@@ -1645,10 +2039,17 @@
     </div>
   </div>
 
-  <!-- ─── 6. GIT (vía Telescope) ─── -->
+  <!-- ─── 6. TELESCOPE AVANZADO & GIT 🔌 ─── -->
   <div class="card card-green">
-    <div class="card-header">Git 🔌 (Telescope)</div>
+    <div class="card-header">Telescope Advanced &amp; Git 🔌</div>
     <div class="card-body">
+      <div class="group-label">Comandos :Telescope</div>
+      <div class="binding"><span class="key">:Telescope find_files</span><span class="desc">= &lt;leader&gt;ff</span></div>
+      <div class="binding"><span class="key">:Telescope live_grep</span><span class="desc">= &lt;leader&gt;fg</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_references</span><span class="desc">= gr</span></div>
+      <div class="binding"><span class="key">:Telescope lsp_definitions</span><span class="desc">= gd</span></div>
+      <div class="binding"><span class="key">:Telescope resume</span><span class="desc">Reanudar último picker</span></div>
+
       <div class="group-label">Telescope Git</div>
       <div class="binding"><span class="key">:Telescope git_files</span><span class="desc">Archivos git</span></div>
       <div class="binding"><span class="key">:Telescope git_branches</span><span class="desc">Ramas git</span></div>
@@ -1660,141 +2061,41 @@
 
 </div>
 
-<div class="page-label">1 / 1</div>
-</div>
-
-</div>
-
-<!-- ════════════════════════════════════════════════════════════════ -->
-<!--  PAGE 6 — i3: Default Bindings                                   -->
-<!-- ════════════════════════════════════════════════════════════════ -->
-
-<div class="tool-section" data-tool="i3" hidden>
-
-<div class="page">
-
-<div class="page-header">
-  <div>
-    <h1>i3 Default Bindings</h1>
-  </div>
-  <div class="header-meta">
-    <span>$mod</span> = <span>Super</span> (o <span>Alt</span> según configuración) &nbsp; ✅ default &nbsp; 🔧 custom
+<div class="workflow-box">
+  <h2>Workflow — Git status con Telescope</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">:Telescope git_status</span><span class="l">ver cambios</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">Enter</span><span class="l">abrir archivo</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">C-t</span><span class="l">abrir en tab</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:Telescope git_commits</span><span class="l">ver commits</span></div>
   </div>
 </div>
 
-<div class="page-legend">
-  <strong>Sección i3:</strong> atajos del i3 window manager.
-  <span class="legend-sep">|</span>
-  ✅ = default de i3 (sin cambios)
-  <span class="legend-sep">|</span>
-  🔧 = personalizado — no viene por defecto o fue modificado
-  <span class="legend-sep">|</span>
-  <kbd>$mod</kbd> = <kbd>Super</kbd> (Mod4, tecla Windows) o <kbd>Alt</kbd> (Mod1)
-  <span class="legend-sep">|</span>
-  <kbd>← ↓ ↑ →</kbd> = flechas del cursor
-  <span class="legend-sep">|</span>
-  <kbd>h j k l ;</kbd> = izquierda, abajo, arriba, derecha, siguiente
-  <span class="legend-sep">|</span>
-  <kbd>S-</kbd> = <kbd>Shift</kbd>
-  <span class="legend-sep">|</span>
-  <kbd>C-</kbd> = <kbd>Ctrl</kbd>
+<div class="page-label">2 / 2</div>
 </div>
 
-<div class="grid-3">
-
-  <!-- ─── 1. GESTIÓN DE VENTANAS ─── -->
-  <div class="card card-blue">
-    <div class="card-header">Gestión de Ventanas</div>
-    <div class="card-body">
-      <div class="group-label">Abrir y cerrar</div>
-      <div class="binding essential"><span class="key">$mod Enter</span><span class="desc">Abrir terminal</span></div>
-      <div class="binding essential"><span class="key">$mod S-q</span><span class="desc">Cerrar ventana</span></div>
-      <div class="binding essential"><span class="key">$mod d</span><span class="desc">Lanzador de apps (dmenu/rofi)</span></div>
-
-      <div class="group-label">Estado</div>
-      <div class="binding essential"><span class="key">$mod f</span><span class="desc">Pantalla completa on/off</span></div>
-    </div>
+<!-- ── EXTRAS: Notas (NeoVim) ── -->
+<details class="extras">
+  <summary>📝 Notas</summary>
+  <div class="inner">
+    <ul>
+      <li><strong>LSP:</strong> los bindings como <kbd>gd</kbd>, <kbd>K</kbd>, etc. son los que <code>nvim-lspconfig</code> configura por defecto. Si usas kickstart.nvim o LazyVim, vienen preconfigurados</li>
+      <li><strong>Telescope:</strong> los keymaps con <kbd>&lt;leader&gt;</kbd> son convención de la comunidad, no vienen por defecto. Debes configurarlos en tu <code>init.lua</code></li>
+      <li><strong>Terminal:</strong> <kbd>C-\\ C-n</kbd> sale de modo terminal. Es universal en NeoVim, no requiere configuración</li>
+      <li><strong>Treesitter:</strong> built-in en NeoVim pero requiere instalar parsers con <kbd>:TSInstall</kbd></li>
+      <li><kbd>&lt;leader&gt;</kbd>: por defecto es <kbd>\\</kbd> (backslash). Comúnmente remapeado a <kbd>Space</kbd></li>
+      <li><strong>LazyVim:</strong> si usas LazyVim, la mayoría de estos bindings ya están configurados</li>
+      <li><strong>kickstart.nvim:</strong> configura Telescope + LSP + Treesitter out-of-the-box</li>
+      <li><strong>Mason:</strong> gestor de servidores LSP (si lo usas, <kbd>:Mason</kbd> para abrir el dashboard)</li>
+    </ul>
   </div>
-
-  <!-- ─── 2. NAVEGACIÓN ─── -->
-  <div class="card card-teal">
-    <div class="card-header">Navegación</div>
-    <div class="card-body">
-      <div class="group-label">Foco</div>
-      <div class="binding essential"><span class="key">$mod ←↓↑→</span><span class="desc">Mover foco</span></div>
-      <div class="binding essential"><span class="key">$mod j k l ;</span><span class="desc">Mover foco (vim-keys)</span></div>
-      <div class="binding essential"><span class="key">$mod Space</span><span class="desc">Alternar foco flotante/anelado</span></div>
-      <div class="binding"><span class="key">$mod a</span><span class="desc">Foco al contenedor padre</span></div>
-
-      <div class="group-label">Workspaces</div>
-      <div class="binding essential"><span class="key">$mod 0 – 9</span><span class="desc">Ir al workspace N</span></div>
-      <div class="binding essential"><span class="key">$mod S-0 – S-9</span><span class="desc">Mover ventana al workspace N</span></div>
-      <div class="binding"><span class="key">$mod Tab 🔧</span><span class="desc">Alternar al último workspace</span></div>
-    </div>
-  </div>
-
-  <!-- ─── 3. MOVER Y REDIMENSIONAR ─── -->
-  <div class="card card-amber">
-    <div class="card-header">Mover y Redimensionar</div>
-    <div class="card-body">
-      <div class="group-label">Mover</div>
-      <div class="binding essential"><span class="key">$mod S-←↓↑→</span><span class="desc">Mover ventana en dirección</span></div>
-      <div class="binding"><span class="key">$mod S-j k l ;</span><span class="desc">Mover ventana (vim-keys)</span></div>
-
-      <div class="group-label">Resize</div>
-      <div class="binding essential"><span class="key">$mod r</span><span class="desc">Entrar a modo resize</span></div>
-      <div class="binding"><span class="key">←↓↑→ / h j k l ;</span><span class="desc">Redimensionar</span></div>
-      <div class="binding"><span class="key">Esc / Enter / $mod r</span><span class="desc">Salir de resize</span></div>
-    </div>
-  </div>
-
-  <!-- ─── 4. LAYOUTS ─── -->
-  <div class="card card-violet">
-    <div class="card-header">Layouts</div>
-    <div class="card-body">
-      <div class="group-label">Layouts</div>
-      <div class="binding essential"><span class="key">$mod e</span><span class="desc">Toggle split (default)</span></div>
-      <div class="binding"><span class="key">$mod s</span><span class="desc">Layout apilado (stacking)</span></div>
-      <div class="binding"><span class="key">$mod w</span><span class="desc">Layout con pestañas (tabbed)</span></div>
-
-      <div class="group-label">División</div>
-      <div class="binding"><span class="key">$mod h</span><span class="desc">Próxima división horizontal</span></div>
-      <div class="binding"><span class="key">$mod v</span><span class="desc">Próxima división vertical</span></div>
-    </div>
-  </div>
-
-  <!-- ─── 5. FLOTANTES Y SCRATCHPAD ─── -->
-  <div class="card card-rose">
-    <div class="card-header">Flotantes y Scratchpad</div>
-    <div class="card-body">
-      <div class="group-label">Flotantes</div>
-      <div class="binding"><span class="key">$mod S-Space</span><span class="desc">Alternar flotante/anelado</span></div>
-      <div class="binding"><span class="key">$mod arrastrar</span><span class="desc">Mover ventana flotante</span></div>
-      <div class="binding"><span class="key">$mod clic der</span><span class="desc">Redimensionar flotante</span></div>
-
-      <div class="group-label">Scratchpad</div>
-      <div class="binding"><span class="key">$mod S--</span><span class="desc">Mover al scratchpad</span></div>
-      <div class="binding essential"><span class="key">$mod -</span><span class="desc">Mostrar/ocultar scratchpad</span></div>
-    </div>
-  </div>
-
-  <!-- ─── 6. SISTEMA ─── -->
-  <div class="card card-slate">
-    <div class="card-header">Sistema</div>
-    <div class="card-body">
-      <div class="binding essential"><span class="key">$mod S-c</span><span class="desc">Recargar config</span></div>
-      <div class="binding"><span class="key">$mod S-r</span><span class="desc">Reiniciar i3 in-place</span></div>
-      <div class="binding"><span class="key">$mod S-e</span><span class="desc">Salir de i3 (confirma)</span></div>
-      <div class="binding"><span class="key">$mod S-x 🔧</span><span class="desc">Bloquear pantalla (custom)</span></div>
-    </div>
-  </div>
+</details>
 
 </div>
 
-<div class="page-label">1 / 1</div>
-</div>
-
-</div>
 
 <script>
   /* ── Search / Filter ── */
@@ -1884,6 +2185,17 @@
       });
 
       card.classList.toggle('filtered-out', cardVisible === 0);
+    });
+
+    // Search inside collapsible extras
+    document.querySelectorAll('.tool-section[data-tool]:not([hidden]) details.extras').forEach(details => {
+      const text = details.textContent.toLowerCase();
+      if (text.includes(q)) {
+        details.open = true;
+        visibleTotal++;
+      } else {
+        details.open = false;
+      }
     });
 
     // Update UI
