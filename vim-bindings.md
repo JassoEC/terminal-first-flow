@@ -107,7 +107,7 @@
 | `/pattern` | search | Búsqueda hacia adelante |
 | `?pattern` | search | Búsqueda hacia atrás |
 | `n` / `N` | next/prev | Siguiente / Anterior coincidencia |
-| `:noh` | no highlight | Quitar resaltado |
+| `:nohlsearch` | no highlight | Quitar resaltado |
 | `:%s/old/new/g` | substitute | Reemplazar en todo el archivo |
 | `:%s/old/new/gc` | confirm | Reemplazar con confirmación |
 | `:%g/pattern/cmd` | global | Ejecutar comando en líneas que coinciden |
@@ -226,7 +226,7 @@
 | No puedo escribir | Estás en Normal o Visual. Pulsa `i` |
 | No puedo salir | `:q!` (salir sin guardar), `:wq` (guardar y salir) |
 | Pegué texto mal formateado | `:set paste`, pega, `:set nopaste` |
-| La búsqueda resalta todo | `:noh` para limpiar |
+| La búsqueda resalta todo | `:nohlsearch` para limpiar |
 | Cerré accidentalmente | `:e#` para reabrir el último archivo |
 | Perdí cambios | `u` (undo) o `C-r` (redo) |
 

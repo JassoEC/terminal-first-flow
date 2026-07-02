@@ -159,7 +159,7 @@
 | `:argadd` | argadd | Agregar archivo a args |
 | `:argdo` | argdo | Ejecutar comando en todos los args |
 | `:oldfiles` | oldfiles | Ver archivos recientes |
-| `:browse oldfiles` | browse | Navegar archivos recientes |
+
 | `:Man` | man | Ver man pages |
 | `:make` | make | Ejecutar make |
 | `:grep` | grep | Ejecutar grep (vimgrep) |

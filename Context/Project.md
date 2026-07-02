@@ -7,7 +7,7 @@
 
 ## 1. Resumen Ejecutivo
 
-TerminalFirst es una **PWA offline-first** que funciona como cheat sheet de atajos de teclado para herramientas de terminal: **tmux**, **Vim**, y **NeoVim**.
+TerminalFirst es una **PWA offline-first** que funciona como cheat sheet de atajos de teclado para herramientas de terminal: **tmux**, **Vim**, **NeoVim**, y **Git**.
 
 - **Regla de Oro:** Se despliega como un único archivo `.html` autónomo, sin dependencias externas en producción.
 - **Plataforma:** GitHub Pages (desde `dist/`).
@@ -20,7 +20,7 @@ TerminalFirst es una **PWA offline-first** que funciona como cheat sheet de ataj
 ```
 .md (fuente de verdad conceptual)
   ↓  SIN automatización — sincronización manual
-tmux-copy-cheatsheet.html  (HTML hardcodeado, 2356 líneas, todo inline)
+tmux-copy-cheatsheet.html  (HTML hardcodeado, 2677 líneas, todo inline)
   ↓  build.js (Node puro, cero dependencias)
 dist/index.html  (versión deployable en GitHub Pages)
 ```
@@ -38,7 +38,8 @@ dist/index.html  (versión deployable en GitHub Pages)
 | `tmux-bindings.md` | 444 | Sesiones, ventanas, paneles, copy-mode Emacs, troubleshooting, conceptos, Quick Start |
 | `vim-bindings.md` | 251 | Modos (Normal/Insert/Visual/Command), movimiento, edición, búsqueda, troubleshooting |
 | `nvim-bindings.md` | 204 | LSP, Telescope, Terminal built-in, Treesitter, Quickfix, Git |
-| `tmux-copy-cheatsheet.html` | 2356 | **Único archivo deployable**. CSS + markup + JS todo inline. |
+| `git-bindings.md` | 193 | Setup & Colaboración, Cambios Locales, Branching, Historial, Deshacer, GitHub CLI, Rebase, Config, Troubleshooting, Conceptos, Quick Start |
+| `tmux-copy-cheatsheet.html` | 2677 | **Único archivo deployable**. CSS + markup + JS todo inline. |
 | `build.js` | 61 | Script de build: copia HTML, ajusta manifest y SW, copia iconos |
 | `sw.js` | 41 | Service Worker: cache-first, precache de index.html + manifest + iconos |
 | `manifest.json` | 25 | Metadatos PWA: nombre, iconos, `start_url`, theme-color |
@@ -48,7 +49,7 @@ dist/index.html  (versión deployable en GitHub Pages)
 
 ## 4. Estructura de la PWA (HTML)
 
-El archivo `tmux-copy-cheatsheet.html` contiene **3 herramientas** organizadas en secciones con atributo `data-tool`. Inicialmente solo tmux está visible; Vim y NeoVim tienen el atributo `hidden` y se alternan mediante el `tool-selector` en JS.
+El archivo `tmux-copy-cheatsheet.html` contiene **4 herramientas** organizadas en secciones con atributo `data-tool`. Inicialmente solo tmux está visible; Vim, NeoVim y Git tienen el atributo `hidden` y se alternan mediante el `tool-selector` en JS.
 
 ### 4.1 tmux (`data-tool="tmux"`) — 2 páginas + Quick Start
 
@@ -73,9 +74,15 @@ El archivo `tmux-copy-cheatsheet.html` contiene **3 herramientas** organizadas e
 | **1 — LSP, Telescope, Terminal** | 3 (grid-3) | LSP 🔌, Telescope 🔌, Terminal ■ + Workflow go-to-definition |
 | **2 — Avanzado** | 3 (grid-4) | NeoVim Built-in ■, Quickfix & Location List, Telescope Advanced & Git 🔌 + Workflow git status |
 
----
+### 4.4 Git & GitHub CLI (`data-tool="git"`) — 2 páginas + Quick Start
 
-## 5. Componentes UI y su JavaScript
+| Página | Cards | Contenido |
+|---|---|---|
+| **— Quick Start** | (details abierto) | `init`, `add`, `commit`, `remote add`, `push` — al inicio de la sección |
+| **1 — Comandos Esenciales** | 6 (grid-3) | Setup & Colaboración, Cambios Locales, Branching, Historial, Deshacer, GitHub CLI + Workflow |
+| **2 — Avanzado** | 4 (grid-4) | Log Avanzado, Rebase & Cherry-pick, Stash & Clean, Config & Troubleshooting + Workflow rebase interactivo |
+
+---
 
 Todo el JS está inline al final del HTML (desde línea ~2100). Las secciones de UI se dividen en:
 
@@ -83,7 +90,7 @@ Todo el JS está inline al final del HTML (desde línea ~2100). Las secciones de
 |---|---|---|
 | **Search / Filtro** | Filtra por `.key` o `.desc` de cada `.binding`. También busca en `details.extras` (auto-abre si hay match). Oculta cards vacías y `group-label` huérfanas. Resalta matches con `<mark>`. Debounce 150ms. | No |
 | **Prefix Toggle** | Inserta `<span class="key-prefix">` vía JS en las keys de `#page-prefix`. Togglea clase `show-full-prefix` en `<body>`. Dos botones: corto (`c`) / completo (`[Ctrl + b] + c`). | `localStorage` (`tmuxPrefixMode`) |
-| **Tool Selector** | Barra sticky con 3 botones (`data-tool`). Oculta/muestra `.tool-section[data-tool]` completos. Oculta prefix toggle si no es tmux. Resetea búsqueda al cambiar. | `localStorage` (`tmuxTool`) |
+| **Tool Selector** | Barra sticky con 4 botones (`data-tool`). Oculta/muestra `.tool-section[data-tool]` completos. Oculta prefix toggle si no es tmux. Resetea búsqueda al cambiar. | `localStorage` (`tmuxTool`) |
 | **Nomenclature** | Transforma `M-`, `C-`, `S-`, `PREFIX` en `<abbr title="...">` con tooltips nativos. Función `addNomenclature()`. | N/A |
 | **Collapsible Extras**| Bloques `<details class="extras">` con Troubleshooting, Quick Start, Conceptos y Notas. **Quick Start** está al inicio de cada tool-section (abierto por defecto). El resto al final. Estilo con tablas, `<kbd>`, `<pre>`, lista de `<ul>`. | N/A |
 | **Scroll to Top** | Botón fixed abajo-derecha, aparece tras 300px de scroll. | N/A |
@@ -198,14 +205,14 @@ El proyecto está diseñado para evolucionar hacia una **generación automatizad
 Actualmente el proyecto se encuentra en **fase 1 + fase 2 + refactor UI completadas**:
 - Fase 1 (✅): Quick Start, Troubleshooting, Conceptos, Notas para los 3 tools
 - Fase 2 (✅): Menús contextuales tmux (22 entradas), Workflows tmux faltantes (2/3)
-- Refactor UI (✅): Densidad de cards normalizada (8–18 bindings/card), paginación unificada (2 páginas por tool), Quick Start reposicionado al inicio, workflows agregados a todas las páginas, search extendido a extras
+- Refactor UI (✅): Densidad de cards normalizada (8–18 bindings/card), paginación unificada (2 páginas por tool), Quick Start reposicionado al inicio, workflows agregados a todas las páginas, search extendido a extras, nueva sección Git & GitHub CLI
 - Fase 3 (⏳ pendiente): Entradas individuales faltantes (tmux ~10 + vim ~6 + nvim ~28)
 
 ---
 
 ## 10. Notas para Sesiones Futuras
 
-- El nombre del archivo `tmux-copy-cheatsheet.html` es engañoso: contiene **3 herramientas**, no solo tmux copy. Es el archivo principal.
+- El nombre del archivo `tmux-copy-cheatsheet.html` es engañoso: contiene **4 herramientas**, no solo tmux copy. Es el archivo principal.
 - Para desarrollo local: `npm run dev` (levanta `serve` en `dist/`).
 - No hay tests automatizados. La verificación es manual: abrir `dist/index.html` en navegador.
 - El SW usa cache-first. Si modificas assets en `dist/`, incrementa `CACHE_NAME` en `sw.js`.

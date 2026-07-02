@@ -870,6 +870,7 @@
   <button data-tool="tmux" class="active" title="tmux default bindings">tmux</button>
   <button data-tool="vim" title="Vim default bindings">Vim</button>
   <button data-tool="nvim" title="NeoVim LSP, Telescope, Terminal">NeoVim</button>
+  <button data-tool="git" title="Git & GitHub CLI comandos esenciales">Git</button>
 
 </nav>
 <div id="no-results" hidden>
@@ -1558,7 +1559,7 @@ PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
       <div class="binding essential"><span class="key">/pattern</span><span class="desc">Búsqueda hacia adelante</span></div>
       <div class="binding"><span class="key">?pattern</span><span class="desc">Búsqueda hacia atrás</span></div>
       <div class="binding essential"><span class="key">n / N</span><span class="desc">Siguiente / Anterior coincidencia</span></div>
-      <div class="binding"><span class="key">:noh</span><span class="desc">Quitar resaltado</span></div>
+      <div class="binding"><span class="key">:nohlsearch</span><span class="desc">Quitar resaltado</span></div>
 
       <div class="group-label">Reemplazar</div>
       <div class="binding"><span class="key">:%s/old/new/g</span><span class="desc">Reemplazar en todo el archivo</span></div>
@@ -1779,7 +1780,7 @@ PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
       <tr class="troubleshooting-row"><td>No puedo escribir</td><td>Estás en Normal o Visual. Pulsa <kbd>i</kbd></td></tr>
       <tr class="troubleshooting-row"><td>No puedo salir</td><td><kbd>:q!</kbd> (salir sin guardar), <kbd>:wq</kbd> (guardar y salir)</td></tr>
       <tr class="troubleshooting-row"><td>Pegué texto mal formateado</td><td><kbd>:set paste</kbd>, pega, <kbd>:set nopaste</kbd></td></tr>
-      <tr class="troubleshooting-row"><td>La búsqueda resalta todo</td><td><kbd>:noh</kbd> para limpiar</td></tr>
+      <tr class="troubleshooting-row"><td>La búsqueda resalta todo</td><td><kbd>:nohlsearch</kbd> para limpiar</td></tr>
       <tr class="troubleshooting-row"><td>Cerré accidentalmente</td><td><kbd>:e#</kbd> para reabrir el último archivo</td></tr>
       <tr class="troubleshooting-row"><td>Perdí cambios</td><td><kbd>u</kbd> (undo) o <kbd>C-r</kbd> (redo)</td></tr>
     </table>
@@ -2004,7 +2005,7 @@ PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
       <div class="binding"><span class="key">:jumps</span><span class="desc">Ver jump list</span></div>
       <div class="binding"><span class="key">:changes</span><span class="desc">Ver change list</span></div>
       <div class="binding"><span class="key">:oldfiles</span><span class="desc">Archivos recientes</span></div>
-      <div class="binding"><span class="key">:browse oldfiles</span><span class="desc">Navegar archivos recientes</span></div>
+
       <div class="binding"><span class="key">:Man</span><span class="desc">Ver man pages</span></div>
       <div class="binding"><span class="key">:make</span><span class="desc">Ejecutar make</span></div>
       <div class="binding"><span class="key">:grep</span><span class="desc">Ejecutar grep (vimgrep)</span></div>
@@ -2085,7 +2086,8 @@ PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
       <li><strong>LSP:</strong> los bindings como <kbd>gd</kbd>, <kbd>K</kbd>, etc. son los que <code>nvim-lspconfig</code> configura por defecto. Si usas kickstart.nvim o LazyVim, vienen preconfigurados</li>
       <li><strong>Telescope:</strong> los keymaps con <kbd>&lt;leader&gt;</kbd> son convención de la comunidad, no vienen por defecto. Debes configurarlos en tu <code>init.lua</code></li>
       <li><strong>Terminal:</strong> <kbd>C-\\ C-n</kbd> sale de modo terminal. Es universal en NeoVim, no requiere configuración</li>
-      <li><strong>Treesitter:</strong> built-in en NeoVim pero requiere instalar parsers con <kbd>:TSInstall</kbd></li>
+      <li><strong>Treesitter:</strong> built-in en NeoVim pero requiere instalar parsers con <kbd>:TSInstall</kbd>. Comandos como <kbd>:InspectTree</kbd>, <kbd>:Inspect</kbd> y <kbd>:EditQuery</kbd> vienen del plugin <code>nvim-treesitter</code> (no del core)</li>
+      <li><strong>NeoVim 0.12+:</strong> <kbd>:LspStart</kbd>, <kbd>:LspStop</kbd> y <kbd>:LspRestart</kbd> fueron reemplazados por <kbd>:lsp enable</kbd> / <kbd>:lsp disable</kbd>. Si usás 0.12+, usá esos en su lugar</li>
       <li><kbd>&lt;leader&gt;</kbd>: por defecto es <kbd>\\</kbd> (backslash). Comúnmente remapeado a <kbd>Space</kbd></li>
       <li><strong>LazyVim:</strong> si usas LazyVim, la mayoría de estos bindings ya están configurados</li>
       <li><strong>kickstart.nvim:</strong> configura Telescope + LSP + Treesitter out-of-the-box</li>
@@ -2095,6 +2097,325 @@ PREFIX z         →  zoom sobre el panel que quieras enfocar</pre>
 </details>
 
 </div>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 7 — Git & GitHub CLI (1/2)                                 -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class=tool-section data-tool=git hidden>
+
+<!-- ── QUICK START ── -->
+<details class=extras open>
+  <summary>🚀 Quick Start — primeros pasos</summary>
+  <div class=inner>
+    <pre>git init                  # Iniciar repo
+git add .                 # Staging de todo
+git commit -m mensaje   # Commit inicial
+git remote add origin <url>  # Conectar remoto
+git push -u origin main   # Subir codigo</pre>
+    <table>
+      <tr><th>Comando</th><th>Para que lo necesitas</th></tr>
+      <tr><td><kbd>git status</kbd></td><td>Saber en que estado esta tu working tree</td></tr>
+      <tr><td><kbd>git add -p</kbd></td><td>Elegir que partes de un archivo commiteas</td></tr>
+      <tr><td><kbd>git commit -am msg</kbd></td><td>Acelerar el ciclo add + commit</td></tr>
+      <tr><td><kbd>git pull</kbd></td><td>Traer cambios de tu equipo antes de pushear</td></tr>
+      <tr><td><kbd>git branch</kbd></td><td>Ver en que rama estas trabajando</td></tr>
+      <tr><td><kbd>git log --oneline --graph</kbd></td><td>Entender el historial visualmente</td></tr>
+    </table>
+  </div>
+</details>
+
+<div class=page>
+
+<div class=page-header>
+  <div>
+    <h1>Git & GitHub CLI <small>Comandos Esenciales</small></h1>
+  </div>
+  <div class=header-meta>
+    ★ = esencial — comandos del dia a dia
+  </div>
+</div>
+
+<div class=page-legend>
+  <strong>Seccion Git:</strong> comandos para el uso profesional diario.
+  <span class="legend-sep">|</span>
+  <kbd>[]</kbd> = opcional &nbsp; <kbd>&lt;&gt;</kbd> = requerido
+  <span class="legend-sep">|</span>
+  ★ = lo que usas todos los dias
+  <span class="legend-sep">|</span>
+  <kbd>gh</kbd> = GitHub CLI
+</div>
+
+<div class="grid-3">
+
+  <!-- ─── 1. SETUP & COLABORACION ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Setup & Colaboracion</div>
+    <div class="card-body">
+      <div class="group-label">Setup</div>
+      <div class="binding essential"><span class="key">git init</span><span class="desc">Inicializar repositorio</span></div>
+      <div class="binding essential"><span class="key">git clone &lt;url&gt;</span><span class="desc">Clonar repositorio remoto</span></div>
+      <div class="binding"><span class="key">git remote -v</span><span class="desc">Ver remotos configurados</span></div>
+      <div class="binding"><span class="key">git remote add origin &lt;url&gt;</span><span class="desc">Agregar remoto</span></div>
+
+      <div class="group-label">Sync</div>
+      <div class="binding essential"><span class="key">git pull</span><span class="desc">Traer cambios (fetch + merge)</span></div>
+      <div class="binding essential"><span class="key">git push</span><span class="desc">Subir commits al remoto</span></div>
+      <div class="binding essential"><span class="key">git push -u origin &lt;branch&gt;</span><span class="desc">Subir y trackear rama</span></div>
+      <div class="binding"><span class="key">git fetch</span><span class="desc">Traer cambios sin mergear</span></div>
+      <div class="binding"><span class="key">git fetch --prune</span><span class="desc">Limpiar referencias remotas</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 2. CAMBIOS LOCALES ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Cambios Locales</div>
+    <div class="card-body">
+      <div class="group-label">Staging</div>
+      <div class="binding essential"><span class="key">git status</span><span class="desc">Ver estado del working tree</span></div>
+      <div class="binding essential"><span class="key">git add &lt;file&gt;</span><span class="desc">Agregar archivo al staging</span></div>
+      <div class="binding"><span class="key">git add .</span><span class="desc">Staging de todo</span></div>
+      <div class="binding"><span class="key">git add -p</span><span class="desc">Staging interactivo por trozos</span></div>
+      <div class="binding"><span class="key">git restore &lt;file&gt;</span><span class="desc">Descartar cambios locales</span></div>
+      <div class="binding"><span class="key">git rm &lt;file&gt;</span><span class="desc">Eliminar y stagiar</span></div>
+
+      <div class="group-label">Commit</div>
+      <div class="binding essential"><span class="key">git commit -m "msg"</span><span class="desc">Commit con mensaje</span></div>
+      <div class="binding essential"><span class="key">git commit -am "msg"</span><span class="desc">Add + commit (tracked files)</span></div>
+      <div class="binding"><span class="key">git commit --amend</span><span class="desc">Modificar ultimo commit</span></div>
+
+      <div class="group-label">Diff</div>
+      <div class="binding"><span class="key">git diff</span><span class="desc">Diferencias sin staged</span></div>
+      <div class="binding"><span class="key">git diff --staged</span><span class="desc">Diferencias en staging</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 3. BRANCHING ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Branching</div>
+    <div class="card-body">
+      <div class="group-label">Gestionar</div>
+      <div class="binding essential"><span class="key">git branch</span><span class="desc">Listar ramas locales</span></div>
+      <div class="binding"><span class="key">git branch &lt;name&gt;</span><span class="desc">Crear rama</span></div>
+      <div class="binding"><span class="key">git branch -d &lt;name&gt;</span><span class="desc">Eliminar rama (seguro)</span></div>
+      <div class="binding"><span class="key">git branch -D &lt;name&gt;</span><span class="desc">Forzar eliminacion</span></div>
+      <div class="binding"><span class="key">git branch -m &lt;old&gt; &lt;new&gt;</span><span class="desc">Renombrar rama</span></div>
+
+      <div class="group-label">Moverse</div>
+      <div class="binding essential"><span class="key">git switch -c &lt;name&gt;</span><span class="desc">Crear y cambiar de rama</span></div>
+      <div class="binding"><span class="key">git switch &lt;name&gt;</span><span class="desc">Cambiar de rama</span></div>
+      <div class="binding"><span class="key">git checkout -b &lt;name&gt;</span><span class="desc">Crear y cambiar (clasico)</span></div>
+
+      <div class="group-label">Merge</div>
+      <div class="binding essential"><span class="key">git merge &lt;name&gt;</span><span class="desc">Fusionar rama a la actual</span></div>
+      <div class="binding"><span class="key">git merge --no-ff &lt;name&gt;</span><span class="desc">Fusionar sin fast-forward</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 4. HISTORIAL ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Historial</div>
+    <div class="card-body">
+      <div class="group-label">Log</div>
+      <div class="binding essential"><span class="key">git log --oneline --graph --decorate</span><span class="desc">Historial visual compacto</span></div>
+      <div class="binding"><span class="key">git log</span><span class="desc">Historial completo</span></div>
+      <div class="binding"><span class="key">git log --oneline</span><span class="desc">Historial compacto</span></div>
+      <div class="binding"><span class="key">git log -p</span><span class="desc">Log con diff</span></div>
+      <div class="binding"><span class="key">git log --stat</span><span class="desc">Log con archivos modificados</span></div>
+
+      <div class="group-label">Investigacion</div>
+      <div class="binding"><span class="key">git show &lt;hash&gt;</span><span class="desc">Ver commit especifico</span></div>
+      <div class="binding"><span class="key">git diff &lt;hash&gt;..&lt;hash&gt;</span><span class="desc">Comparar dos commits</span></div>
+      <div class="binding"><span class="key">git blame &lt;file&gt;</span><span class="desc">Quien cambio cada linea</span></div>
+      <div class="binding"><span class="key">git shortlog -sn</span><span class="desc">Resumen de commits por autor</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 5. DESHACER ─── -->
+  <div class="card card-rose">
+    <div class="card-header">Deshacer</div>
+    <div class="card-body">
+      <div class="group-label">Reset & Revert</div>
+      <div class="binding essential"><span class="key">git reset HEAD~1</span><span class="desc">Deshacer commit (cambios sin staged)</span></div>
+      <div class="binding"><span class="key">git reset --soft HEAD~1</span><span class="desc">Deshacer commit (cambios staged)</span></div>
+      <div class="binding"><span class="key">git reset --hard HEAD~1</span><span class="desc">Deshacer commit + descartar cambios</span></div>
+      <div class="binding"><span class="key">git revert &lt;hash&gt;</span><span class="desc">Crear commit que deshace otro</span></div>
+
+      <div class="group-label">Stash</div>
+      <div class="binding essential"><span class="key">git stash push -m "msg"</span><span class="desc">Guardar cambios temporales</span></div>
+      <div class="binding"><span class="key">git stash list</span><span class="desc">Listar stashes</span></div>
+      <div class="binding"><span class="key">git stash pop</span><span class="desc">Recuperar y eliminar stash</span></div>
+      <div class="binding"><span class="key">git stash apply</span><span class="desc">Recuperar sin eliminar</span></div>
+
+      <div class="group-label">Clean</div>
+      <div class="binding"><span class="key">git clean -n</span><span class="desc">Vista previa de archivos a eliminar</span></div>
+      <div class="binding"><span class="key">git clean -f</span><span class="desc">Eliminar archivos no trackeados</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 6. GITHUB CLI ─── -->
+  <div class="card card-green">
+    <div class="card-header">GitHub CLI</div>
+    <div class="card-body">
+      <div class="group-label">Auth & Repos</div>
+      <div class="binding essential"><span class="key">gh auth login</span><span class="desc">Autenticarse en GitHub</span></div>
+      <div class="binding"><span class="key">gh auth status</span><span class="desc">Ver estado de autenticacion</span></div>
+      <div class="binding"><span class="key">gh repo create</span><span class="desc">Crear repositorio</span></div>
+      <div class="binding"><span class="key">gh repo fork</span><span class="desc">Forkear repositorio</span></div>
+
+      <div class="group-label">Pull Requests</div>
+      <div class="binding essential"><span class="key">gh pr create</span><span class="desc">Crear PR desde la rama actual</span></div>
+      <div class="binding essential"><span class="key">gh pr list</span><span class="desc">Listar PRs abiertos</span></div>
+      <div class="binding"><span class="key">gh pr view &lt;n&gt;</span><span class="desc">Ver PR en terminal</span></div>
+      <div class="binding"><span class="key">gh pr checkout &lt;n&gt;</span><span class="desc">Checkout local del PR</span></div>
+      <div class="binding"><span class="key">gh pr merge &lt;n&gt;</span><span class="desc">Mergear PR</span></div>
+
+      <div class="group-label">Issues</div>
+      <div class="binding"><span class="key">gh issue create</span><span class="desc">Crear issue</span></div>
+      <div class="binding"><span class="key">gh issue list</span><span class="desc">Listar issues</span></div>
+      <div class="binding"><span class="key">gh issue view &lt;n&gt;</span><span class="desc">Ver issue</span></div>
+      <div class="binding"><span class="key">gh issue close &lt;n&gt;</span><span class="desc">Cerrar issue</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-label">1 / 2 — Pagina siguiente: Log Avanzado, Rebase, Config</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  PAGE 8 — Git & GitHub CLI Avanzado (2/2)                       -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page">
+
+<div class="page-header">
+  <div>
+    <h1>Git & GitHub CLI <small>Avanzado: Log, Rebase, Config</small></h1>
+  </div>
+  <div class="header-meta">
+    Herramientas para resolver problemas y optimizar el flujo
+  </div>
+</div>
+
+<div class="page-legend">
+  <strong>Seccion Git Avanzado:</strong> lo que necesitas cuando algo sale mal o queres trabajar mas eficiente.
+  <span class="legend-sep">|</span>
+  <kbd>git rebase -i</kbd> = interactivo &nbsp; <kbd>git reflog</kbd> = el salvavidas
+</div>
+
+<div class="grid-4">
+
+  <!-- ─── 7. LOG AVANZADO ─── -->
+  <div class="card card-blue">
+    <div class="card-header">Log Avanzado</div>
+    <div class="card-body">
+      <div class="group-label">Filtros</div>
+      <div class="binding"><span class="key">git log --author="<name>"</span><span class="desc">Filtrar por autor</span></div>
+      <div class="binding"><span class="key">git log --since="2 weeks ago"</span><span class="desc">Commits desde una fecha</span></div>
+      <div class="binding"><span class="key">git log --until="<date>"</span><span class="desc">Commits hasta una fecha</span></div>
+      <div class="binding"><span class="key">git log --grep="<text>"</span><span class="desc">Filtrar por mensaje</span></div>
+      <div class="binding"><span class="key">git log -3</span><span class="desc">Ultimos N commits</span></div>
+
+      <div class="group-label">Formato</div>
+      <div class="binding"><span class="key">git shortlog -sn</span><span class="desc">Contribuciones por autor</span></div>
+      <div class="binding"><span class="key">git log --format="%h %s"</span><span class="desc">Formato personalizado</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 8. REBASE & CHERRY-PICK ─── -->
+  <div class="card card-teal">
+    <div class="card-header">Rebase & Cherry-pick</div>
+    <div class="card-body">
+      <div class="group-label">Rebase</div>
+      <div class="binding essential"><span class="key">git rebase &lt;branch&gt;</span><span class="desc">Rebase sobre otra rama</span></div>
+      <div class="binding"><span class="key">git rebase -i HEAD~N</span><span class="desc">Rebase interactivo (squash/edit)</span></div>
+      <div class="binding"><span class="key">git rebase --continue</span><span class="desc">Continuar tras resolver conflicto</span></div>
+      <div class="binding"><span class="key">git rebase --abort</span><span class="desc">Cancelar rebase</span></div>
+      <div class="binding"><span class="key">git rebase --skip</span><span class="desc">Saltar commit conflictivo</span></div>
+
+      <div class="group-label">Cherry-pick</div>
+      <div class="binding"><span class="key">git cherry-pick &lt;hash&gt;</span><span class="desc">Aplicar commit especifico</span></div>
+      <div class="binding"><span class="key">git cherry-pick &lt;hA&gt;..&lt;hB&gt;</span><span class="desc">Rango de commits</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 9. STASH & CLEAN ─── -->
+  <div class="card card-amber">
+    <div class="card-header">Stash & Clean</div>
+    <div class="card-body">
+      <div class="group-label">Stash</div>
+      <div class="binding essential"><span class="key">git stash push -m "msg"</span><span class="desc">Guardar cambios temporales</span></div>
+      <div class="binding"><span class="key">git stash list</span><span class="desc">Listar stashes</span></div>
+      <div class="binding essential"><span class="key">git stash pop</span><span class="desc">Recuperar y eliminar stash</span></div>
+      <div class="binding"><span class="key">git stash apply</span><span class="desc">Recuperar sin eliminar</span></div>
+      <div class="binding"><span class="key">git stash drop</span><span class="desc">Eliminar stash</span></div>
+
+      <div class="group-label">Clean</div>
+      <div class="binding"><span class="key">git clean -n</span><span class="desc">Previsualizar archivos a eliminar</span></div>
+      <div class="binding"><span class="key">git clean -f</span><span class="desc">Eliminar archivos no trackeados</span></div>
+      <div class="binding"><span class="key">git clean -fd</span><span class="desc">Eliminar archivos y directorios</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 10. CONFIG & TROUBLESHOOTING ─── -->
+  <div class="card card-violet">
+    <div class="card-header">Config & Troubleshooting</div>
+    <div class="card-body">
+      <div class="group-label">Configuracion</div>
+      <div class="binding essential"><span class="key">git config --global user.name "<name>"</span><span class="desc">Configurar nombre</span></div>
+      <div class="binding essential"><span class="key">git config --global user.email "<email>"</span><span class="desc">Configurar email</span></div>
+      <div class="binding"><span class="key">git config --global core.editor &lt;cmd&gt;</span><span class="desc">Editor por defecto</span></div>
+      <div class="binding"><span class="key">git config --global alias.&lt;n&gt; &lt;cmd&gt;</span><span class="desc">Crear alias</span></div>
+      <div class="binding"><span class="key">git config --list</span><span class="desc">Ver toda la configuracion</span></div>
+
+      <div class="group-label">Tags & Ayuda</div>
+      <div class="binding"><span class="key">git tag</span><span class="desc">Listar tags</span></div>
+      <div class="binding"><span class="key">git tag -a &lt;v&gt; -m "msg"</span><span class="desc">Crear tag anotado</span></div>
+      <div class="binding"><span class="key">git push --tags</span><span class="desc">Subir tags al remoto</span></div>
+      <div class="binding"><span class="key">git reflog</span><span class="desc">Historial de HEAD (el salvavidas)</span></div>
+      <div class="binding"><span class="key">git help &lt;cmd&gt;</span><span class="desc">Ayuda de cualquier comando</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="workflow-box">
+  <h2>Workflow — Rebase interactivo para limpiar commits locales</h2>
+  <div class="workflow-steps">
+    <div class="wf-step"><span class="k">git rebase -i HEAD~3</span><span class="l">seleccionar</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">pick — squash</span><span class="l">combinar commits</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">:wq</span><span class="l">confirmar rebase</span></div>
+    <span class="wf-arrow">→</span>
+    <div class="wf-step"><span class="k">git push --force-with-lease</span><span class="l">publicar</span></div>
+  </div>
+</div>
+
+<div class="page-label">2 / 2</div>
+</div>
+
+<!-- ── EXTRAS: Notas (Git) ── -->
+<details class="extras">
+  <summary>📝 Notas</summary>
+  <div class="inner">
+    <ul>
+      <li>★ = esencial — comandos que usas todos los dias. Si solo aprendes estos, tienes el 80% cubierto</li>
+      <li><strong>git push rechazado:</strong> primero <kbd>git pull --rebase</kbd> para aplicar tus cambios encima de los del remoto</li>
+      <li><strong>NUNCA uses <kbd>git reset --hard</kbd></strong> en commits que ya hayas pusheado. Usa <kbd>git revert</kbd> en su lugar</li>
+      <li><strong>git reflog:</strong> si perdiste commits con <kbd>reset --hard</kbd>, el reflog te salva. Busca el hash anterior y hace <kbd>git reset --hard &lt;hash&gt;</kbd></li>
+      <li><strong>gh pr create:</strong> asume que ya tienes una rama con commits pusheados al remoto</li>
+      <li><strong>gh auth login:</strong> es el primer paso antes de usar cualquier comando <kbd>gh</kbd>. Te autentica y configura git para usar HTTPS</li>
+      <li><strong>Alias:</strong> configura <kbd>git config --global alias.lg "log --oneline --graph --decorate"</kbd> y despues usas solo <kbd>git lg</kbd></li>
+      <li><strong>Editor por defecto:</strong> configura <kbd>git config --global core.editor "code --wait"</kbd> si usas VS Code</li>
+    </ul>
+  </div>
+</details>
+
+</div>
+
 
 
 <script>
